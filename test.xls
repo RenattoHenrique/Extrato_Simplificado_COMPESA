@@ -1,0 +1,2462 @@
+
+			<main class="gm_form" id="main">
+			
+			
+			
+			<table border="1" cellpadding="3" cellspacing="2" align="center" class="boxedBody gm_rel thDuplo">
+				
+					<tr bgcolor="C0C0C0" align="center">
+						<td class="Titulo" colspan="16"><b>EXTRATO SIMPLIFICADO</b>&nbsp;</td>
+					</tr>
+				
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Tipo Frota:</td>
+						<td class="FormCampo" colspan="15">TODOS</td>
+					</tr>
+				
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Grupo Limite:</td>
+						<td class="FormCampo" colspan="15">TODOS</td>
+					</tr>
+				
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Fam&iacute;lia Ve&iacute;culo:</td>
+						<td class="FormCampo" colspan="15">TODOS</td>
+					</tr>
+				
+      	<tr>
+      	  <td class="FormLabel" colspan="1">Quebra:</td>
+      	  <td class="FormCampo" colspan="15">
+	          CENTRO DE CUSTOS
+    	  	</td>
+     		</tr>
+     	
+				<tr bgcolor="C0C0C0">
+					<td class="FormLabel" align=right>Situa&ccedil;&atilde;o Cart&atilde;o:</td>
+					<td class="FormCampo" colspan="15">
+						Liberados para compra e bloqueados
+					</td>
+				</tr>
+				<tr bgcolor="C0C0C0">
+					<td class="FormLabel" align=right>Ordem:</td>
+					<td class="FormCampo" colspan="15">
+						Percentual de Utiliza&ccedil;&atilde;o
+					</td>
+				</tr>
+				
+					
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Limite Distribu&iacute;do (per&iacute;odo atual) R$:</td>
+						<td class="FormCampo" colspan="15" align=left>
+							55.738,71 
+						</td>
+					</tr>
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Valor Consumido (compras) R$:</td>
+						<td class="FormCampo" colspan="15" align=left>
+							49.857,88 
+						</td>
+					</tr>
+					<tr bgcolor="C0C0C0">
+						<td class="FormLabel" align=right>Limite Distribu&iacute;do (pr&oacute;ximo per&iacute;odo) R$:</td>
+						<td class="FormCampo" colspan="15" align=left>
+							32.102,53 
+						</td>				
+					</tr>
+					
+						<tr bgcolor="C0C0C0">
+							<td class="FormLabel" align=right>Data da Pr&oacute;xima Renova&ccedil;&atilde;o de Limite:</td>
+							<td class="FormCampo" colspan="15" align=left>
+								01/12/2024 
+							</td>				
+						</tr>
+					
+				
+				<tr>				
+					<th rowspan="2">Cart&atilde;o</th>
+					
+							<th rowspan="2">Placa</th>
+							<th rowspan="2">Nr. Frota</th>
+							<th rowspan="2">Fam&iacute;lia</th>
+							<th rowspan="2">Tipo Frota</th>
+							<th rowspan="2">Modelo</th>
+							<th rowspan="2">Fabricante</th>
+							<th rowspan="2">Cidade/UF</th>
+						
+					<th rowspan="2">
+						Nome Respons&aacute;vel
+					</th>
+					
+							<th rowspan="2">
+								
+									Limite
+								
+							</th>
+							
+					
+							<th colspan="4">Limite Per&iacute;odo Atual</th>
+						
+					<th rowspan="2">Limite Pr&oacute;ximo Per&iacute;odo</th>
+				</tr>
+				<tr>
+					<th>Valor Reservado</th>
+					<th>Limite Atual</th>
+					<th>Compras (utilizado)</th>
+					<th>Saldo</th>
+
+					
+								<th>CENTRO DE CUSTOS</th>
+							
+				</tr>
+		
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 9543
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZO2H33</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">S10/LS</td>
+													<td align="left">CHEVROLET</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.268,79 <br><br>
+													</td>
+													<td>
+														1.268,79
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													1.100,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 9600
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZO2H73</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">S10/LS</td>
+													<td align="left">CHEVROLET</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.700,00 <br><br>
+													</td>
+													<td>
+														1.700,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													853,85 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8157
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">MAQ0003</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">MAQUINA</td>
+													<td align="left">NAO DEFINIDO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.017,73 <br><br>
+													</td>
+													<td>
+														1.017,73
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													970,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8199
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">MAQ0005</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">MAQUINA</td>
+													<td align="left">NAO DEFINIDO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														203,08 <br><br>
+													</td>
+													<td>
+														203,08
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													430,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7757
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJG1G06</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.200,00 <br><br>
+													</td>
+													<td>
+														1.200,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 0259
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJE0D72</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														471,50 <br><br>
+													</td>
+													<td>
+														471,40
+													</td>
+													<td>0,10<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 9949
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZO1C30</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">S10/LS</td>
+													<td align="left">CHEVROLET</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														2.188,87 <br><br>
+													</td>
+													<td>
+														2.187,35
+													</td>
+													<td>1,52<br><br></td>
+												
+												<td>
+													1.461,54 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 4248
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PCA5D00</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">DAILY</td>
+													<td align="left">IVECO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.051,21 <br><br>
+													</td>
+													<td>
+														1.049,91
+													</td>
+													<td>1,30<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 0739
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">PCA5D00</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">DAILY</td>
+													<td align="left">IVECO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.051,21 <br><br>
+													</td>
+													<td>
+														1.049,91
+													</td>
+													<td>1,30<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 3711
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PDD3182</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">JCB</td>
+													<td align="left">ARTESANAL</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.000,00 <br><br>
+													</td>
+													<td>
+														998,36
+													</td>
+													<td>1,64<br><br></td>
+												
+												<td>
+													600,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 6194
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJE0D84</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.259,14 <br><br>
+													</td>
+													<td>
+														1.250,64
+													</td>
+													<td>8,50<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2989
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SNY6A49</td>
+													<td></td>
+													<td align="left">CAMINHAO</td>
+													<td align="left">LOCADO</td>
+													<td align="left">DELIVERY 9.180</td>
+													<td align="left">VW</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														261,54 <br><br>
+													</td>
+													<td>
+														257,57
+													</td>
+													<td>3,97<br><br></td>
+												
+												<td>
+													1.261,54 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 6634
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SOA2F14</td>
+													<td></td>
+													<td align="left">MOTO</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">NXR160</td>
+													<td align="left">HONDA</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														420,00 <br><br>
+													</td>
+													<td>
+														413,55
+													</td>
+													<td>6,45<br><br></td>
+												
+												<td>
+													100,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8173
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">MAQ0004</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">MAQUINA</td>
+													<td align="left">NAO DEFINIDO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														944,00 <br><br>
+													</td>
+													<td>
+														927,97
+													</td>
+													<td>16,03<br><br></td>
+												
+												<td>
+													854,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2399
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SOD6G88</td>
+													<td></td>
+													<td align="left">CAMINHAO</td>
+													<td align="left">LOCADO</td>
+													<td align="left">DELIVERY/9.180</td>
+													<td align="left">VOLKSWAGEN</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DIEGO BUARQUE CORTIZO
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														3.169,25 <br><br>
+													</td>
+													<td>
+														3.018,76
+													</td>
+													<td>150,49<br><br></td>
+												
+												<td>
+													619,99 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 6548
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SOG8H13</td>
+													<td></td>
+													<td align="left">CAMINHAO</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">DELIVERY</td>
+													<td align="left">VOLKSWAGEN</td>
+													<td align="left">
+														
+															&nbsp;
+														
+													</td>
+													
+														<td align="left">
+															DIEGO BUARQUE CORTIZO
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.686,30 <br><br>
+													</td>
+													<td>
+														1.586,30
+													</td>
+													<td>100,00<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 5156
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZV6G08</td>
+													<td></td>
+													<td align="left">MOTOCICLETA</td>
+													<td align="left">LOCADO</td>
+													<td align="left">NXR160</td>
+													<td align="left">HONDA</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														110,00 <br><br>
+													</td>
+													<td>
+														103,27
+													</td>
+													<td>6,73<br><br></td>
+												
+												<td>
+													110,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8312
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJE0D62</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														860,00 <br><br>
+													</td>
+													<td>
+														805,08
+													</td>
+													<td>54,92<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 6600
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SOA2E54</td>
+													<td></td>
+													<td align="left">MOTO</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">NXR160</td>
+													<td align="left">HONDA</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														370,00 <br><br>
+													</td>
+													<td>
+														343,32
+													</td>
+													<td>26,68<br><br></td>
+												
+												<td>
+													100,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 0061
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZO3G50</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">S10/LS</td>
+													<td align="left">CHEVROLET</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.852,50 <br><br>
+													</td>
+													<td>
+														1.696,21
+													</td>
+													<td>156,29<br><br></td>
+												
+												<td>
+													815,38 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8025
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">QYY0G07</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.192,85 <br><br>
+													</td>
+													<td>
+														1.092,05
+													</td>
+													<td>100,80<br><br></td>
+												
+												<td>
+													1.007,69 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7977
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">QYY4D57</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.248,41 <br><br>
+													</td>
+													<td>
+														1.135,20
+													</td>
+													<td>113,21<br><br></td>
+												
+												<td>
+													776,72 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 0546
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">QYY7F06</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.660,85 <br><br>
+													</td>
+													<td>
+														1.497,57
+													</td>
+													<td>163,28<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 6566
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJG1G04</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														529,67 <br><br>
+													</td>
+													<td>
+														476,94
+													</td>
+													<td>52,73<br><br></td>
+												
+												<td>
+													1.650,40 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2534
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SNQ6B27</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.801,31 <br><br>
+													</td>
+													<td>
+														1.620,05
+													</td>
+													<td>181,26<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 1406
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJE0D78</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														494,43 <br><br>
+													</td>
+													<td>
+														444,43
+													</td>
+													<td>50,00<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 0004
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZO3F00</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">S10</td>
+													<td align="left">CHEVROLET</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.983,00 <br><br>
+													</td>
+													<td>
+														1.779,96
+													</td>
+													<td>203,04<br><br></td>
+												
+												<td>
+													1.610,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8116
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">MAQ0001</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">MAQUINA</td>
+													<td align="left">NAO DEFINIDO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														17.564,90 <br><br>
+													</td>
+													<td>
+														15.764,90
+													</td>
+													<td>1.800,00<br><br></td>
+												
+												<td>
+													550,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 1018
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJE0D77</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														918,48 <br><br>
+													</td>
+													<td>
+														808,09
+													</td>
+													<td>110,39<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2781
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SNY6D29</td>
+													<td></td>
+													<td align="left">CAMINHAO</td>
+													<td align="left">LOCADO</td>
+													<td align="left">DELIVERY</td>
+													<td align="left">VOLKSWAGEN</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.233,59 <br><br>
+													</td>
+													<td>
+														1.082,00
+													</td>
+													<td>151,59<br><br></td>
+												
+												<td>
+													930,59 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2061
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">QYY0D37</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.531,36 <br><br>
+													</td>
+													<td>
+														1.338,81
+													</td>
+													<td>192,55<br><br></td>
+												
+												<td>
+													804,10 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 5941
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">RZV5C78</td>
+													<td></td>
+													<td align="left">MOTOCICLETA</td>
+													<td align="left">LOCADO</td>
+													<td align="left">NXR160</td>
+													<td align="left">HONDA</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														110,00 <br><br>
+													</td>
+													<td>
+														93,71
+													</td>
+													<td>16,29<br><br></td>
+												
+												<td>
+													110,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8132
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">MAQ0002</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">MAQUINA</td>
+													<td align="left">NAO DEFINIDO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														500,00 <br><br>
+													</td>
+													<td>
+														422,69
+													</td>
+													<td>77,31<br><br></td>
+												
+												<td>
+													580,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7795
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">SJG1G02</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														799,59 <br><br>
+													</td>
+													<td>
+														644,47
+													</td>
+													<td>155,12<br><br></td>
+												
+												<td>
+													789,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7993
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">QYY0F47</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														215,00 <br><br>
+													</td>
+													<td>
+														107,81
+													</td>
+													<td>107,19<br><br></td>
+												
+												<td>
+													710,67 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 4079
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">KII8770</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">8.160</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													991,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8090
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">OYR1711</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">CARGO</td>
+													<td align="left">FORD</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													1.315,38 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7498
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PEW3772</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">CARGO</td>
+													<td align="left">FORD</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													853,85 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 4521
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">OYV5791</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">24.280</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														1.870,15 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>1.870,15<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 5056
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">OYV5791</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">24.280</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													1.200,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7779
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PDD3442</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">JCB</td>
+													<td align="left">ARTESANAL</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													1.581,60 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8074
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PCA5320</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">DAILY</td>
+													<td align="left">IVECO</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													1.123,08 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7690
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">SJG1G04</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">LOCADO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7530
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PCA7534</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">KA SEL</td>
+													<td align="left">FORD</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													420,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 7811
+													<b color="#000000">(A)</b>
+												</td>
+												
+													<td align="left">PEL6552</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">PROPRIO</td>
+													<td align="left">UNO</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													815,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 2081
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">SJE0D84</td>
+													<td></td>
+													<td align="left">LEVE</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">FIAT MOBI LIKE</td>
+													<td align="left">FIAT</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 1820
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">QYY7F06</td>
+													<td></td>
+													<td align="left"></td>
+													<td align="left">LOCADO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														RECIFE / PE 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													753,85 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaPar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 9373
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">PDN7615</td>
+													<td></td>
+													<td align="left">PICKUP LEVE</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">NOVA SAVEIRO</td>
+													<td align="left">VW</td>
+													<td align="left">
+														DESCONHECIDA / 0 
+													</td>
+													
+														<td align="left">
+															DANIELE RODRIGUES COELHO CALDAS
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													0,00 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+											<tr class="LinhaImpar" valign="top" align="right">
+												<td align="center" nowrap>
+													6035 74** **** 8742
+													<b color="#ffcc00">(B)</b>
+												</td>
+												
+													<td align="left">SOG8H13</td>
+													<td></td>
+													<td align="left">CAMINHAO</td>
+													<td align="left">PROPRIO</td>
+													<td align="left">DELIVERY</td>
+													<td align="left">VOLKSWAGEN</td>
+													<td align="left">
+														
+															&nbsp;
+														
+													</td>
+													
+														<td align="left">
+															DIEGO BUARQUE CORTIZO
+														</td>
+													
+												<td align="left" nowrap>
+													ABASTECIMENTO/SERVICOS <br><br>
+													
+												</td>
+												
+													<td>
+														
+																0,00
+															
+													</td>
+													<td>
+														0,00 <br><br>
+													</td>
+													<td>
+														0,00
+													</td>
+													<td>0,00<br><br></td>
+												
+												<td>
+													893,30 
+												</td>
+												
+													<td>1731611001</td>
+														
+												
+											</tr>
+										
+			</table>
+				<div class="Titulo gm_form_botao" ></div> 
+		</main>
+
+		
+			<div class="cntLink"><a href="javascript:history.back()">[ Voltar ]</a></div>
+		
+	
+		<div class="d-flex my-1 mx-1">
+			<div class="col-6">
+				
+		<div class="gcd-msg-usuario w-100" >
+			<div class="d-flex my-1 mx-1 v-align-center ">
+				<div class="mr-1"><img src="/Img/ico_info.jpg" width="16" height="16" title="Legenda Informa&ccedil;&atilde;o" alt="ícone de Legenda Informa&ccedil;&atilde;o" aria-hidden="true"></div>
+				<div class="gm_msg_rodape"> Clique sobre o <strong>Limite</strong> para visualizar os detalhes.Valor Reservado apresenta o valor de compras em processo de autoriza&ccedil;&atilde;o. </div>
+			</div>
+		</div>
+    
+			</div>
+			<div class="col-6 d-flex flex-column">
+				<div class="legendaCnt">
+					
+						<table cellspacing="2" cellpadding="6" class="gm_leg">
+							<tr>
+								<td style='text-align: center; background-color: #003399; font: bold x-small; color: White;'>Legenda:</td>
+								<td style='background-color: #99ccff' colspan=3>
+								<font size=2><b>(A)</b></font> cart&atilde;o ativo / <font size=2 color="#ffcc00"><b>(B)</b></font> cart&atilde;o bloqueado<br>
+								<font size=2 color="#808080"><b>(C)</b></font> cart&atilde;o cancelado / <font size=2 color="#ff0000"><b>(U)</b></font> usu&aacute;rio cancelado<br>
+								<font size=2 color="#0000ff"><b>(T)</b></font> usu&aacute;rio titular / <font size=2 color="#008000"><b>(D)</b></font> usu&aacute;rio dependente<br>
+								<font size=2><b>(Z)</b></font> liberado para compra e bloqueado								
+								</td>
+						</tr>
+						</table>
+					
+				</div>
+			</div>
+		</div>
+
+		
+    <div id="override_replataform" style="background: #eaeff5;width: 100%; height:100%;position:fixed;left:0;top:0;z-index:99999"></div>
+
+<script>if(window.addOnSubmit){ addOnSubmit();}</script>
+
+	</html>
