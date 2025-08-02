@@ -34,20 +34,40 @@ const fuelPrices = {
   arla32: 5.75
 };
 
-// Inicializa o cliente Supabase com verificação
+// Cliente Supabase
 let supabase = null;
-try {
-  if (typeof supabaseClient === 'undefined') {
-    throw new Error('Biblioteca Supabase não carregada.');
-  }
-  supabase = supabaseClient.createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
-  );
-  console.log('Cliente Supabase inicializado com sucesso.');
-} catch (err) {
-  console.error('Erro ao inicializar Supabase:', err.message);
-  alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas.');
+
+// Função para inicializar o cliente Supabase com retry
+async function initializeSupabase() {
+  console.log('Tentando inicializar Supabase...');
+  const maxAttempts = 5;
+  let attempts = 0;
+
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      attempts++;
+      if (typeof supabaseClient !== 'undefined') {
+        try {
+          supabase = supabaseClient.createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co',
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
+          );
+          console.log('Cliente Supabase inicializado com sucesso.');
+          clearInterval(interval);
+          resolve(true);
+        } catch (err) {
+          console.error('Erro ao criar cliente Supabase:', err.message);
+          clearInterval(interval);
+          resolve(false);
+        }
+      } else if (attempts >= maxAttempts) {
+        console.error('Falha ao carregar biblioteca Supabase após', maxAttempts, 'tentativas.');
+        alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas.');
+        clearInterval(interval);
+        resolve(false);
+      }
+    }, 500);
+  });
 }
 
 // ==========================================================================
@@ -66,7 +86,9 @@ async function initializeDefaultStates() {
     'Gas_Cozinha': { current: 0, stock: 0 },
     'Oleo_Maquina': { current: 0, stock: 0 }
   };
-  if (supabase) {
+
+  const supabaseLoaded = await initializeSupabase();
+  if (supabaseLoaded && supabase) {
     await loadStateFromSupabase();
   } else {
     console.warn('Supabase não disponível. Usando valores padrão.');
@@ -188,7 +210,7 @@ async function loadStateFromSupabase() {
     renderFuelPricesCard();
     console.log('Dados carregados do Supabase com sucesso.');
   } catch (err) {
-    console.error('Erro ao carregar dados do Supabase:', err);
+    console.error('Erro ao carregar dados do Supabase:', err.message);
     alert('Erro ao carregar dados do banco. Usando valores padrão.');
   }
 }
@@ -215,8 +237,8 @@ async function saveMaintenanceStateToSupabase() {
     alert('Manutenção salva com sucesso!');
     console.log('maintenance_state salvo no Supabase:', updates);
   } catch (err) {
-    console.error('Erro ao salvar maintenance_state:', err);
-    alert('Erro ao salvar dados de manutenção.');
+    console.error('Erro ao salvar maintenance_state:', err.message);
+    alert('Erro ao salvar dados de manutenção: ' + err.message);
   }
 }
 
@@ -243,8 +265,8 @@ async function saveMaterialsStateToSupabase() {
     alert('Materiais salvos com sucesso!');
     console.log('materials_state salvo no Supabase:', updates);
   } catch (err) {
-    console.error('Erro ao salvar materials_state:', err);
-    alert('Erro ao salvar dados de materiais.');
+    console.error('Erro ao salvar materials_state:', err.message);
+    alert('Erro ao salvar dados de materiais: ' + err.message);
   }
 }
 
@@ -314,7 +336,7 @@ async function fetchFuelPrices() {
     console.log('Preços de combustíveis atualizados:', updatedPrices);
     return updatedPrices;
   } catch (err) {
-    console.error('Erro ao buscar preços:', err);
+    console.error('Erro ao buscar preços:', err.message);
     return fuelPrices;
   }
 }
@@ -540,7 +562,7 @@ function renderSummary(table) {
 
   updateOperationChart();
   renderFuelPricesCard().catch(err => {
-    console.error('Erro ao renderizar preços:', err);
+    console.error('Erro ao renderizar preços:', err.message);
     const errorCard = document.createElement('div');
     errorCard.className = 'modern-card p-6 text-red-500 bg-white loaded';
     errorCard.innerHTML = '<p>Erro ao carregar preços de combustíveis.</p>';
@@ -746,7 +768,7 @@ async function copyToClipboard(text) {
     await navigator.clipboard.writeText(text);
     console.log('Texto copiado para a área de transferência:', text);
   } catch (err) {
-    console.error('Erro ao copiar:', err);
+    console.error('Erro ao copiar:', err.message);
   }
 }
 
@@ -772,7 +794,7 @@ function downloadImage() {
       if (buttonContainer) buttonContainer.style.display = '';
       console.log('Imagem baixada com sucesso.');
     }).catch(err => {
-      console.error('Erro ao baixar imagem:', err);
+      console.error('Erro ao baixar imagem:', err.message);
       alert('Erro ao baixar imagem.');
     });
   }, 100);
@@ -807,7 +829,7 @@ async function shareImage() {
       alert('Compartilhamento não suportado pelo navegador.');
     }
   } catch (err) {
-    console.error('Erro ao compartilhar:', err);
+    console.error('Erro ao compartilhar:', err.message);
     alert('Erro ao compartilhar imagem.');
   } finally {
     if (buttonContainer) buttonContainer.style.display = '';
