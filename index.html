@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frota CMA e CPR SUL</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Substituir Tailwind CDN por CSS local após configurar Tailwind CLI -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link href="/dist/output.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="bg-white flex flex-col items-center min-h-screen p-8 gap-6">
-  
   <!-- Botões e Upload -->
   <div class="button-container flex flex-col sm:flex-row gap-3 w-full max-w-4xl justify-center items-center">
     <label for="fileInput" class="custom-btn upload-icon" aria-label="Enviar arquivo HTML ou XLS com dados dos veículos">
@@ -84,5 +85,3 @@
   </script>
 </body>
 </html>
-
-
