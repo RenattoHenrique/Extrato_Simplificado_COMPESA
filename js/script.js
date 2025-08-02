@@ -34,18 +34,29 @@ const fuelPrices = {
   arla32: 5.75
 };
 
-// Inicializa o cliente Supabase
-const supabase = Supabase.createClient(
-  process.env.SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co',
-  process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
-);
+// Inicializa o cliente Supabase com verificação
+let supabase = null;
+try {
+  if (typeof supabaseClient === 'undefined') {
+    throw new Error('Biblioteca Supabase não carregada.');
+  }
+  supabase = supabaseClient.createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
+  );
+  console.log('Cliente Supabase inicializado com sucesso.');
+} catch (err) {
+  console.error('Erro ao inicializar Supabase:', err.message);
+  alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas.');
+}
 
 // ==========================================================================
 // Funções de Inicialização
 // ==========================================================================
 
-// Inicializa os estados padrão e carrega do Supabase
+// Inicializa os estados padrão e tenta carregar do Supabase
 async function initializeDefaultStates() {
+  console.log('Inicializando estados padrão...');
   maintenanceState = {};
   desiredPlates.forEach(plate => {
     maintenanceState[plate] = false;
@@ -55,7 +66,15 @@ async function initializeDefaultStates() {
     'Gas_Cozinha': { current: 0, stock: 0 },
     'Oleo_Maquina': { current: 0, stock: 0 }
   };
-  await loadStateFromSupabase();
+  if (supabase) {
+    await loadStateFromSupabase();
+  } else {
+    console.warn('Supabase não disponível. Usando valores padrão.');
+    renderMaintenanceModal();
+    renderMiscModal();
+    renderMaterialsCard();
+    renderFuelPricesCard();
+  }
 }
 
 // ==========================================================================
@@ -125,7 +144,12 @@ function processFile(file) {
 
 // Carrega estados do Supabase
 async function loadStateFromSupabase() {
+  if (!supabase) {
+    console.warn('Supabase não disponível. Pulando carregamento.');
+    return;
+  }
   try {
+    console.log('Carregando dados do Supabase...');
     // Carregar maintenance_state
     const { data: maintenanceData, error: maintenanceError } = await supabase
       .from('maintenance_state')
@@ -171,7 +195,13 @@ async function loadStateFromSupabase() {
 
 // Salva maintenance_state no Supabase
 async function saveMaintenanceStateToSupabase() {
+  if (!supabase) {
+    console.warn('Supabase não disponível. Dados não salvos.');
+    alert('Erro: Supabase não disponível. Dados não foram salvos.');
+    return;
+  }
   try {
+    console.log('Salvando maintenance_state no Supabase...');
     const updates = Object.entries(maintenanceState).map(([plate, isInMaintenance]) => ({
       plate,
       is_in_maintenance: isInMaintenance
@@ -192,7 +222,13 @@ async function saveMaintenanceStateToSupabase() {
 
 // Salva materials_state no Supabase
 async function saveMaterialsStateToSupabase() {
+  if (!supabase) {
+    console.warn('Supabase não disponível. Dados não salvos.');
+    alert('Erro: Supabase não disponível. Dados não foram salvos.');
+    return;
+  }
   try {
+    console.log('Salvando materials_state no Supabase...');
     const updates = Object.entries(materialsState).map(([material_id, { current, stock }]) => ({
       material_id,
       current_quantity: current,
@@ -275,6 +311,7 @@ async function fetchFuelPrices() {
       if (produto.includes('gnv')) updatedPrices.gnv = preco;
       if (produto.includes('etanol hidratado')) updatedPrices.etanol = preco;
     });
+    console.log('Preços de combustíveis atualizados:', updatedPrices);
     return updatedPrices;
   } catch (err) {
     console.error('Erro ao buscar preços:', err);
@@ -707,6 +744,7 @@ function calculateOperationData() {
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
+    console.log('Texto copiado para a área de transferência:', text);
   } catch (err) {
     console.error('Erro ao copiar:', err);
   }
@@ -732,6 +770,10 @@ function downloadImage() {
       link.href = canvas.toDataURL('image/png');
       link.click();
       if (buttonContainer) buttonContainer.style.display = '';
+      console.log('Imagem baixada com sucesso.');
+    }).catch(err => {
+      console.error('Erro ao baixar imagem:', err);
+      alert('Erro ao baixar imagem.');
     });
   }, 100);
 }
@@ -760,6 +802,7 @@ async function shareImage() {
         title: 'Extrato de Veículos',
         text: 'Confira o saldo atualizado.'
       });
+      console.log('Imagem compartilhada com sucesso.');
     } else {
       alert('Compartilhamento não suportado pelo navegador.');
     }
@@ -818,6 +861,7 @@ function toggleMiscModal(show) {
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM carregado. Inicializando aplicação...');
   const loader = document.createElement('div');
   loader.className = 'loader';
   document.body.appendChild(loader);
@@ -830,20 +874,42 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeDefaultStates();
   }, 500);
 
-  document.getElementById('fileInput').addEventListener('change', (e) => processFile(e.target.files[0]));
-  document.getElementById('downloadBtn').addEventListener('click', downloadImage);
-  document.getElementById('shareBtn').addEventListener('click', shareImage);
-  document.getElementById('maintenanceBtn').addEventListener('click', () => toggleMaintenanceModal(true));
-  document.getElementById('closeModalBtn').addEventListener('click', () => toggleMaintenanceModal(false));
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    console.log('Arquivo selecionado:', e.target.files[0]?.name);
+    processFile(e.target.files[0]);
+  });
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    console.log('Iniciando download de imagem...');
+    downloadImage();
+  });
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    console.log('Iniciando compartilhamento de imagem...');
+    shareImage();
+  });
+  document.getElementById('maintenanceBtn').addEventListener('click', () => {
+    console.log('Abrindo modal de manutenção...');
+    toggleMaintenanceModal(true);
+  });
+  document.getElementById('closeModalBtn').addEventListener('click', () => {
+    console.log('Fechando modal de manutenção...');
+    toggleMaintenanceModal(false);
+  });
   document.getElementById('confirmMaintenanceBtn').addEventListener('click', () => {
+    console.log('Confirmando dados de manutenção...');
     saveMaintenanceStateToSupabase();
     toggleMaintenanceModal(false);
   });
-  document.getElementById('miscBtn').addEventListener('click', () => toggleMiscModal(true));
-  document.getElementById('closeMiscModalBtn').addEventListener('click', () => toggleMiscModal(false));
+  document.getElementById('miscBtn').addEventListener('click', () => {
+    console.log('Abrindo modal de materiais...');
+    toggleMiscModal(true);
+  });
+  document.getElementById('closeMiscModalBtn').addEventListener('click', () => {
+    console.log('Fechando modal de materiais...');
+    toggleMiscModal(false);
+  });
   document.getElementById('confirmMiscBtn').addEventListener('click', () => {
+    console.log('Confirmando dados de materiais...');
     saveMaterialsStateToSupabase();
     toggleMiscModal(false);
   });
 });
-
