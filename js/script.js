@@ -37,13 +37,29 @@ const fuelPrices = {
 // Cliente Supabase
 let supabase = null;
 
+// Configurações do Supabase
+const SUPABASE_URL = window.env?.SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co';
+const SUPABASE_ANON_KEY = window.env?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU';
+
 // Função para inicializar o cliente Supabase com retry
 async function initializeSupabase() {
   console.log('Tentando inicializar Supabase...');
   console.log('Variáveis de ambiente:', {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '[presente]' : '[ausente]'
+    url: SUPABASE_URL,
+    key: SUPABASE_ANON_KEY ? '[presente]' : '[ausente]'
   });
+
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.error('Erro: Variáveis do Supabase (URL ou chave) não definidas.');
+    alert('Erro: Configuração do Supabase incompleta. Algumas funcionalidades podem estar limitadas.');
+    return false;
+  }
+
+  if (typeof supabaseClient === 'undefined') {
+    console.error('Erro: Biblioteca Supabase (@supabase/supabase-js) não encontrada. Verifique o CDN no index.html.');
+    alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas. Verifique o console para detalhes.');
+    return false;
+  }
 
   const maxAttempts = 10;
   let attempts = 0;
@@ -51,41 +67,34 @@ async function initializeSupabase() {
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       attempts++;
-      if (typeof supabaseClient !== 'undefined') {
-        try {
-          supabase = supabaseClient.createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co',
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
-          );
-          console.log('Cliente Supabase inicializado com sucesso.');
-          // Testar conexão com uma consulta simples
-          supabase.from('maintenance_state').select('plate').limit(1)
-            .then(({ error }) => {
-              if (error) {
-                console.error('Erro ao testar conexão com Supabase:', error.message);
-                alert('Erro ao conectar ao Supabase: ' + error.message);
-                supabase = null;
-                resolve(false);
-              } else {
-                console.log('Conexão com Supabase testada com sucesso.');
-                resolve(true);
-              }
-            });
-          clearInterval(interval);
-        } catch (err) {
-          console.error('Erro ao criar cliente Supabase:', err.message);
+      try {
+        supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Cliente Supabase inicializado com sucesso.');
+        // Testar conexão com uma consulta simples
+        supabase.from('maintenance_state').select('plate').limit(1)
+          .then(({ error }) => {
+            if (error) {
+              console.error('Erro ao testar conexão com Supabase:', error.message);
+              alert('Erro ao conectar ao Supabase: ' + error.message);
+              supabase = null;
+              resolve(false);
+            } else {
+              console.log('Conexão com Supabase testada com sucesso.');
+              resolve(true);
+            }
+          });
+        clearInterval(interval);
+      } catch (err) {
+        if (attempts >= maxAttempts) {
+          console.error('Falha ao inicializar Supabase após', maxAttempts, 'tentativas:', err.message);
+          alert('Erro: Não foi possível inicializar o Supabase. Algumas funcionalidades podem estar limitadas. Verifique o console para detalhes.');
           clearInterval(interval);
           resolve(false);
+        } else {
+          console.log(`Tentativa ${attempts}/${maxAttempts}: Erro ao inicializar Supabase: ${err.message}`);
         }
-      } else if (attempts >= maxAttempts) {
-        console.error('Falha ao carregar biblioteca Supabase após', maxAttempts, 'tentativas.');
-        alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas. Verifique o console para detalhes.');
-        clearInterval(interval);
-        resolve(false);
-      } else {
-        console.log(`Tentativa ${attempts}/${maxAttempts}: supabaseClient não encontrado.`);
       }
-    }, 1000); // Aumentado para 1000ms para dar mais tempo ao CDN
+    }, 1000);
   });
 }
 
@@ -326,38 +335,10 @@ function formatDateTime() {
 // Funções de Busca de Dados
 // ==========================================================================
 
-// Busca preços de combustíveis (fallback estático)
+// Busca preços de combustíveis (usando apenas preços estáticos)
 async function fetchFuelPrices() {
-  try {
-    const query = `
-      SELECT
-        produto,
-        AVG(preco_venda) as preco_medio
-      FROM
-        basedosdados.br_anp_precos_combustiveis.microdados
-      WHERE
-        ano = 2025
-        AND produto IN ('Gasolina C', 'Diesel', 'GNV', 'Etanol Hidratado')
-        AND regiao = 'BRASIL'
-      GROUP BY
-        produto
-    `;
-    const data = await basedosdados.query(query, { billingProjectId: 'your-google-project-id' });
-    const updatedPrices = { ...fuelPrices };
-    data.forEach(row => {
-      const produto = row.produto.toLowerCase();
-      const preco = parseFloat(row.preco_medio) || 0;
-      if (produto.includes('gasolina c')) updatedPrices.gasolina = preco;
-      if (produto.includes('diesel')) updatedPrices.diesel = preco;
-      if (produto.includes('gnv')) updatedPrices.gnv = preco;
-      if (produto.includes('etanol hidratado')) updatedPrices.etanol = preco;
-    });
-    console.log('Preços de combustíveis atualizados:', updatedPrices);
-    return updatedPrices;
-  } catch (err) {
-    console.error('Erro ao buscar preços:', err.message);
-    return fuelPrices;
-  }
+  console.log('Usando preços estáticos de combustíveis:', fuelPrices);
+  return fuelPrices;
 }
 
 // ==========================================================================
