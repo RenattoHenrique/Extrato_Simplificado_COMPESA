@@ -34,13 +34,87 @@ const fuelPrices = {
   arla32: 5.75
 };
 
+// Variáveis de configuração do Supabase
+const SUPABASE_URL = window.env?.SUPABASE_URL || 'https://wnuialureqofvgefdfol.supabase.co';
+const SUPABASE_ANON_KEY = window.env?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU';
+let supabase = null;
+
 // ==========================================================================
 // Funções de Inicialização
 // ==========================================================================
 
-// Inicializa os estados padrão de manutenção e materiais
+// Inicializa o cliente Supabase
+async function initializeSupabase() {
+  console.log('Tentando inicializar Supabase...');
+  console.log('Variáveis de ambiente:', {
+    url: SUPABASE_URL,
+    key: SUPABASE_ANON_KEY ? '[presente]' : '[ausente]',
+  });
 
-function initializeDefaultStates() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.error('Erro: Variáveis do Supabase (URL ou chave) não definidas.');
+    alert('Erro: Configuração do Supabase incompleta.');
+    return false;
+  }
+
+  if (typeof supabaseClient === 'undefined') {
+    console.error('Erro: Biblioteca Supabase (@supabase/supabase-js) não encontrada.');
+    console.log('Verifique se o CDN está incluído no index.html: <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>');
+    try {
+      const response = await fetch('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
+      if (!response.ok) {
+        console.error(`Falha ao carregar CDN do Supabase: Status ${response.status}`);
+      } else {
+        console.log('CDN acessível, mas supabaseClient não foi definido. Possível problema de timing ou cache.');
+      }
+    } catch (err) {
+      console.error('Erro ao testar CDN do Supabase:', err.message);
+    }
+    alert('Erro: Biblioteca Supabase não encontrada.');
+    return false;
+  }
+
+  try {
+    supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Cliente Supabase inicializado com sucesso.');
+
+    // Testar conexão com maintenance_state
+    const { error: maintenanceError } = await supabase
+      .from('maintenance_state')
+      .select('plate')
+      .limit(1);
+    if (maintenanceError) {
+      console.error('Erro ao testar conexão com maintenance_state:', maintenanceError.message);
+      alert('Erro ao conectar ao Supabase (maintenance_state): ' + maintenanceError.message);
+      supabase = null;
+      return false;
+    }
+
+    // Testar conexão com materials_state
+    const { error: materialsError } = await supabase
+      .from('materials_state')
+      .select('material_id')
+      .limit(1);
+    if (materialsError) {
+      console.error('Erro ao testar conexão com materials_state:', materialsError.message);
+      alert('Erro ao conectar ao Supabase (materials_state): ' + materialsError.message);
+      supabase = null;
+      return false;
+    }
+
+    console.log('Conexão com Supabase testada com sucesso para ambas as tabelas.');
+    return true;
+  } catch (err) {
+    console.error('Erro ao inicializar Supabase:', err.message);
+    alert('Erro ao inicializar Supabase: ' + err.message);
+    supabase = null;
+    return false;
+  }
+}
+
+// Inicializa os estados padrão de manutenção e materiais
+async function initializeDefaultStates() {
+  console.log('Inicializando estados padrão...');
   maintenanceState = {};
   desiredPlates.forEach(plate => {
     maintenanceState[plate] = false;
@@ -50,7 +124,101 @@ function initializeDefaultStates() {
     'Gas_Cozinha': { current: 0, stock: 0 },
     'Oleo_Maquina': { current: 0, stock: 0 }
   };
-  loadStateFromLocalStorage();
+  await loadStateFromSupabase();
+}
+
+// Carrega estados do Supabase
+async function loadStateFromSupabase() {
+  if (!supabase) {
+    console.warn('Supabase não disponível. Usando estados padrão.');
+    return;
+  }
+
+  console.log('Carregando dados do Supabase...');
+  try {
+    const { data: maintenanceData, error: maintenanceError } = await supabase
+      .from('maintenance_state')
+      .select('plate, is_in_maintenance');
+    if (maintenanceError) {
+      console.error('Erro ao carregar maintenance_state:', maintenanceError.message);
+      alert('Erro ao carregar dados do Supabase: ' + maintenanceError.message);
+      return;
+    }
+    maintenanceData.forEach(({ plate, is_in_maintenance }) => {
+      if (desiredPlates.includes(plate)) {
+        maintenanceState[plate] = is_in_maintenance;
+      }
+    });
+
+    const { data: materialsData, error: materialsError } = await supabase
+      .from('materials_state')
+      .select('material_id, current_quantity, stock_quantity');
+    if (materialsError) {
+      console.error('Erro ao carregar materials_state:', materialsError.message);
+      alert('Erro ao carregar dados do Supabase: ' + materialsError.message);
+      return;
+    }
+    materialsData.forEach(({ material_id, current_quantity, stock_quantity }) => {
+      if (['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'].includes(material_id)) {
+        materialsState[material_id] = { current: current_quantity, stock: stock_quantity };
+      }
+    });
+
+    console.log('Dados carregados do Supabase com sucesso:', { maintenanceState, materialsState });
+  } catch (err) {
+    console.error('Erro ao carregar dados do Supabase:', err.message);
+    alert('Erro ao carregar dados do Supabase: ' + err.message);
+  }
+}
+
+// Salva estados no Supabase
+async function saveStateToSupabase() {
+  if (!supabase) {
+    console.warn('Supabase não disponível. Dados não foram salvos.');
+    alert('Supabase não disponível. Dados não foram salvos.');
+    return;
+  }
+
+  console.log('Salvando dados no Supabase...');
+  try {
+    // Salvar maintenance_state
+    const maintenanceUpdates = Object.entries(maintenanceState)
+      .filter(([plate]) => desiredPlates.includes(plate))
+      .map(([plate, is_in_maintenance]) => ({
+        plate,
+        is_in_maintenance
+      }));
+    const { error: maintenanceError } = await supabase
+      .from('maintenance_state')
+      .upsert(maintenanceUpdates, { onConflict: 'plate' });
+    if (maintenanceError) {
+      console.error('Erro ao salvar maintenance_state:', maintenanceError.message);
+      alert('Erro ao salvar dados no Supabase: ' + maintenanceError.message);
+      return;
+    }
+    console.log('maintenance_state salvo no Supabase:', maintenanceUpdates);
+
+    // Salvar materials_state
+    const materialsUpdates = Object.entries(materialsState)
+      .filter(([material_id]) => ['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'].includes(material_id))
+      .map(([material_id, { current, stock }]) => ({
+        material_id,
+        current_quantity: current,
+        stock_quantity: stock
+      }));
+    const { error: materialsError } = await supabase
+      .from('materials_state')
+      .upsert(materialsUpdates, { onConflict: 'material_id' });
+    if (materialsError) {
+      console.error('Erro ao salvar materials_state:', materialsError.message);
+      alert('Erro ao salvar dados no Supabase: ' + materialsError.message);
+      return;
+    }
+    console.log('materials_state salvo no Supabase:', materialsUpdates);
+  } catch (err) {
+    console.error('Erro ao salvar dados no Supabase:', err.message);
+    alert('Erro ao salvar dados no Supabase: ' + err.message);
+  }
 }
 
 // ==========================================================================
@@ -69,11 +237,11 @@ function exportDataToFile() {
   link.download = 'BancoDado.txt';
   link.click();
   URL.revokeObjectURL(link.href);
+  console.log('Dados exportados para BancoDado.txt:', data);
 }
 
 // Importa dados de um arquivo .txt e atualiza a interface
-
-function importDataFromFile(file) {
+async function importDataFromFile(file) {
   if (!file) {
     console.log('Seleção de arquivo cancelada. Mantendo os dados atuais.');
     return;
@@ -85,17 +253,32 @@ function importDataFromFile(file) {
   }
 
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = async function (e) {
     try {
       const data = JSON.parse(e.target.result);
+      // Atualizar maintenanceState
       maintenanceState = { ...maintenanceState, ...data.maintenanceState };
-      materialsState = { ...materialsState, ...data.materialsState };
-      Object.keys(materialsState).forEach(key => {
-        if (!data.materialsState || !data.materialsState[key]) return;
-        materialsState[key].current = Number.isInteger(data.materialsState[key].current) ? data.materialsState[key].current : materialsState[key].current;
-        materialsState[key].stock = Number.isInteger(data.materialsState[key].stock) ? data.materialsState[key].stock : materialsState[key].stock;
+      Object.keys(maintenanceState).forEach(plate => {
+        if (!desiredPlates.includes(plate)) {
+          delete maintenanceState[plate];
+        } else {
+          maintenanceState[plate] = !!data.maintenanceState[plate];
+        }
       });
-      saveStateToLocalStorage();
+      // Atualizar materialsState
+      materialsState = { ...materialsState, ...data.materialsState };
+      const validMaterials = ['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'];
+      Object.keys(materialsState).forEach(key => {
+        if (!validMaterials.includes(key)) {
+          delete materialsState[key];
+        } else if (data.materialsState && data.materialsState[key]) {
+          materialsState[key].current = Number.isInteger(data.materialsState[key].current) ? data.materialsState[key].current : materialsState[key].current;
+          materialsState[key].stock = Number.isInteger(data.materialsState[key].stock) ? data.materialsState[key].stock : materialsState[key].stock;
+        }
+      });
+      // Salvar no Supabase
+      await saveStateToSupabase();
+      // Atualizar UI
       const contentDiv = document.getElementById('content');
       const summaryContainer = document.getElementById('summaryContainer');
       contentDiv.innerHTML = '';
@@ -111,6 +294,7 @@ function importDataFromFile(file) {
       renderMaintenanceModal();
       renderMiscModal();
       alert('Dados importados com sucesso!');
+      console.log('Dados importados do BancoDado.txt:', { maintenanceState, materialsState });
     } catch (err) {
       console.error('Erro ao importar BancoDado.txt:', err);
       alert('Erro ao importar o arquivo. Verifique se é um BancoDado.txt válido.');
@@ -145,30 +329,43 @@ function processFile(file) {
 
   const reader = new FileReader();
   reader.onload = function (e) {
-    const content = e.target.result;
     try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(content, 'text/html');
-      const table = doc.querySelector('table.boxedBody');
-
-      if (!table) {
-        console.error('Tabela .boxedBody não encontrada no arquivo.');
-        showError('Erro: O arquivo não contém uma tabela válida com a classe "boxedBody".');
-        return;
+      if (file.name.endsWith('.xls')) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        // Converter para HTML para compatibilidade com renderVehicleCards
+        const table = document.createElement('table');
+        table.className = 'boxedBody';
+        jsonData.forEach((row, index) => {
+          const tr = document.createElement('tr');
+          tr.className = index % 2 === 0 ? 'LinhaPar' : 'LinhaImpar';
+          row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell || '';
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+        currentTable = table;
+      } else {
+        const content = e.target.result;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'text/html');
+        const table = doc.querySelector('table.boxedBody');
+        if (!table) {
+          console.error('Tabela .boxedBody não encontrada no arquivo.');
+          showError('Erro: O arquivo não contém uma tabela válida com a classe "boxedBody".');
+          return;
+        }
+        currentTable = table;
       }
 
-      const firstRow = table.querySelector('tr.LinhaImpar, tr.LinhaPar');
-      if (!firstRow || firstRow.cells.length < 14) {
-        console.error('Tabela inválida: menos de 14 colunas ou nenhuma linha válida encontrada.');
-        showError('Erro: A tabela não contém a coluna de saldo (coluna 13). Verifique o formato do arquivo.');
-        return;
-      }
-
-      console.log('Tabela .boxedBody encontrada com sucesso:', table);
-      currentTable = table;
-      renderVehicleCards(table);
+      console.log('Tabela .boxedBody encontrada com sucesso:', currentTable);
+      renderVehicleCards(currentTable);
       renderMaterialsCard();
-      renderSummary(table);
+      renderSummary(currentTable);
       renderMaintenanceModal();
       renderMiscModal();
     } catch (err) {
@@ -180,7 +377,11 @@ function processFile(file) {
     console.error('Erro ao ler o arquivo:', err);
     showError('Erro ao ler o arquivo: ' + err.message);
   };
-  reader.readAsText(file);
+  if (file.name.endsWith('.xls')) {
+    reader.readAsArrayBuffer(file);
+  } else {
+    reader.readAsText(file);
+  }
 }
 
 // ==========================================================================
@@ -202,45 +403,6 @@ function parseSaldo(valor) {
 function formatCurrency(value) {
   const formatted = value.toFixed(2).replace('.', ',');
   return formatted.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-
-// ==========================================================================
-// Funções de Busca de Dados
-// ==========================================================================
-
-// Busca preços médios de combustíveis via Base dos Dados
-async function fetchFuelPrices() {
-  try {
-    const query = `
-      SELECT
-        produto,
-        AVG(preco_venda) as preco_medio
-      FROM
-        basedosdados.br_anp_precos_combustiveis.microdados
-      WHERE
-        ano = 2025
-        AND produto IN ('Gasolina C', 'Diesel', 'GNV', 'Etanol Hidratado')
-        AND regiao = 'BRASIL'
-      GROUP BY
-        produto
-    `;
-    const data = await basedosdados.query(query, { billingProjectId: 'your-google-project-id' });
-
-    const updatedPrices = { ...fuelPrices };
-    data.forEach(row => {
-      const produto = row.produto.toLowerCase();
-      const preco = parseFloat(row.preco_medio) || 0;
-      if (produto.includes('gasolina c')) updatedPrices.gasolina = preco;
-      if (produto.includes('diesel')) updatedPrices.diesel = preco;
-      if (produto.includes('gnv')) updatedPrices.gnv = preco;
-      if (produto.includes('etanol hidratado')) updatedPrices.etanol = preco;
-    });
-
-    return updatedPrices;
-  } catch (err) {
-    console.error('Erro ao buscar preços da Base dos Dados:', err);
-    return fuelPrices;
-  }
 }
 
 // ==========================================================================
@@ -266,7 +428,7 @@ function renderVehicleCards(table) {
       if (desiredPlates.includes(plate)) {
         const balanceRaw = row.cells[13]?.textContent.trim().replace('R$', '') || '0,00';
         plateData[plate] = balanceRaw;
-        console.log(`Placa: ${plate}, Saldo Bruto: ${balanceRaw}`); // Log para depuração
+        console.log(`Placa: ${plate}, Saldo Bruto: ${balanceRaw}`);
       }
     }
   });
@@ -278,10 +440,10 @@ function renderVehicleCards(table) {
     const imgSrc = `img/car_img/${plate}.png`;
     const isInMaintenance = maintenanceState[plate] || false;
 
-    console.log(`Renderizando placa: ${plate}, Saldo: R$ ${balanceDisplay}, Manutenção: ${isInMaintenance}`); // Log para depuração
+    console.log(`Renderizando placa: ${plate}, Saldo: R$ ${balanceDisplay}, Manutenção: ${isInMaintenance}`);
 
     const card = document.createElement('div');
-    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded`; // Adicionar 'loaded' imediatamente
+    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded`;
     card.setAttribute('data-plate', plate);
     card.setAttribute('data-balance', balanceRaw);
     card.innerHTML = `
@@ -307,21 +469,21 @@ function renderMaterialsCard() {
     <ul class="space-y-4 text-gray-700 text-sm">
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/Agua_Mineral.png');"/>
+          <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Agua_Mineral.png');"/>
           <span>Água Mineral</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current} / ${materialsState['Agua_Mineral'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/Gas_Cozinha.png');"/>
+          <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Gas_Cozinha.png');"/>
           <span>Gás de Cozinha</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current} / ${materialsState['Gas_Cozinha'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/Oleo_Maquina.png');"/>
+          <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Oleo_Maquina.png');"/>
           <span>Óleo de Máquina</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current} / ${materialsState['Oleo_Maquina'].stock}</span>
@@ -332,9 +494,8 @@ function renderMaterialsCard() {
 }
 
 // Renderiza cartão de preços de combustíveis
-async function renderFuelPricesCard() {
+function renderFuelPricesCard() {
   const summaryContainer = document.getElementById('summaryContainer');
-  const prices = await fetchFuelPrices();
   const fuelCard = document.createElement('div');
   fuelCard.className = 'modern-card p-6 bg-white loaded';
   fuelCard.setAttribute('data-fuel-prices-card', 'true');
@@ -343,38 +504,38 @@ async function renderFuelPricesCard() {
     <ul class="space-y-4 text-gray-700 text-sm">
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Gasol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de gasolina" onerror="console.error('Erro ao carregar imagem: combust_img/Gasol_Comun.png');"/>
+          <img src="./img/combust_img/Gasol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de gasolina" onerror="console.error('Erro ao carregar imagem: img/combust_img/Gasol_Comun.png');"/>
           <span>Gasolina C.</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.gasolina)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(fuelPrices.gasolina)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Diesel_Comum.png" class="w-10 h-10 object-contain loaded" alt="Ícone de diesel" onerror="console.error('Erro ao carregar imagem: combust_img/Diesel_Comum.png');"/>
+          <img src="./img/combust_img/Diesel_Comum.png" class="w-10 h-10 object-contain loaded" alt="Ícone de diesel" onerror="console.error('Erro ao carregar imagem: img/combust_img/Diesel_Comum.png');"/>
           <span>Diesel C.</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.diesel)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(fuelPrices.diesel)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Gás_Natural.png" class="w-10 h-10 object-contain loaded" alt="Ícone de GNV" onerror="console.error('Erro ao carregar imagem: combust_img/Gás_Natural.png');"/>
+          <img src="./img/combust_img/Gás_Natural.png" class="w-10 h-10 object-contain loaded" alt="Ícone de GNV" onerror="console.error('Erro ao carregar imagem: img/combust_img/Gás_Natural.png');"/>
           <span>Gás (GNV)</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.gnv)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(fuelPrices.gnv)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Etanol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de etanol" onerror="console.error('Erro ao carregar imagem: combust_img/Etanol_Comun.png');"/>
+          <img src="./img/combust_img/Etanol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de etanol" onerror="console.error('Erro ao carregar imagem: img/combust_img/Etanol_Comun.png');"/>
           <span>Etanol C.</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.etanol)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(fuelPrices.etanol)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Arla_32.png" class="w-10 h-10 object-contain loaded" alt="Ícone de Arla 32" onerror="console.error('Erro ao carregar imagem: combust_img/Arla_32.png');"/>
+          <img src="./img/combust_img/Arla_32.png" class="w-10 h-10 object-contain loaded" alt="Ícone de Arla 32" onerror="console.error('Erro ao carregar imagem: img/combust_img/Arla_32.png');"/>
           <span>Arla 32</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.arla32)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(fuelPrices.arla32)}</span>
       </li>
     </ul>
   `;
@@ -382,7 +543,7 @@ async function renderFuelPricesCard() {
 }
 
 // Renderiza resumo de saldos e gráficos
-async function renderSummary(table) {
+function renderSummary(table) {
   const plateData = {};
   const dataRows = table.querySelectorAll('tr.LinhaImpar, tr.LinhaPar');
   if (dataRows.length === 0) {
@@ -497,16 +658,7 @@ async function renderSummary(table) {
   summaryContainer.appendChild(quantityCard);
 
   updateOperationChart();
-
-  try {
-    await renderFuelPricesCard();
-  } catch (err) {
-    console.error('Erro ao renderizar cartão de preços:', err);
-    const errorCard = document.createElement('div');
-    errorCard.className = 'modern-card p-6 text-base text-red-500 bg-white loaded';
-    errorCard.innerHTML = '<p>Erro ao carregar preços de combustíveis. Usando dados estáticos.</p>';
-    summaryContainer.appendChild(errorCard);
-  }
+  renderFuelPricesCard();
 }
 
 // ==========================================================================
@@ -532,13 +684,13 @@ function renderMaintenanceModal() {
   });
 
   document.querySelectorAll('#maintenanceList input[type="checkbox"]').forEach(switchInput => {
-    switchInput.addEventListener('change', (event) => {
+    switchInput.addEventListener('change', async (event) => {
       const plate = event.target.getAttribute('data-plate');
       maintenanceState[plate] = event.target.checked;
+      await saveStateToSupabase();
       updateVehicleCard(plate);
       updateQuantityCard();
       updateOperationChart();
-      saveStateToLocalStorage();
     });
   });
 }
@@ -570,13 +722,13 @@ function renderMiscModal() {
   });
 
   document.querySelectorAll('#miscList input[type="number"]').forEach(input => {
-    input.addEventListener('change', (event) => {
+    input.addEventListener('change', async (event) => {
       const material = event.target.getAttribute('data-material');
       const type = event.target.getAttribute('data-type');
       const value = parseInt(event.target.value) || 0;
       materialsState[material][type] = value;
+      await saveStateToSupabase();
       updateMaterialsCard();
-      saveStateToLocalStorage();
     });
   });
 }
@@ -598,7 +750,7 @@ function updateVehicleCard(plate) {
     if (balanceElement) {
       balanceElement.className = `text-3xl font-bold ${balanceValue === 0 ? 'zero-balance' : 'text-green-600'} loaded`;
       balanceElement.textContent = `R$ ${balanceDisplay}`;
-      console.log(`Atualizando placa: ${plate}, Saldo: R$ ${balanceDisplay}`); // Log para depuração
+      console.log(`Atualizando placa: ${plate}, Saldo: R$ ${balanceDisplay}`);
     }
     const badge = card.querySelector('.maintenance-badge');
     if (isInMaintenance && !badge) {
@@ -621,21 +773,21 @@ function updateMaterialsCard() {
       <ul class="space-y-4 text-gray-700 text-sm">
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/Agua_Mineral.png');"/>
+            <img src="img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Agua_Mineral.png');"/>
             <span>Água Mineral</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current} / ${materialsState['Agua_Mineral'].stock}</span>
         </li>
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/Gas_Cozinha.png');"/>
+            <img src="img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Gas_Cozinha.png');"/>
             <span>Gás de Cozinha</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current} / ${materialsState['Gas_Cozinha'].stock}</span>
         </li>
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/Oleo_Maquina.png');"/>
+            <img src="img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/diversos_img/Oleo_Maquina.png');"/>
             <span>Óleo de Máquina</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current} / ${materialsState['Oleo_Maquina'].stock}</span>
@@ -668,7 +820,7 @@ function updateQuantityCard() {
       </div>
       <div class="flex justify-between border-t pt-2 mt-6 text-lg font-semibold">
         <span>Manutenção</span>
-        <span class="text-gray-800 font-bold">${maintenanceCount} veículos</span>
+        <span class="font-bold text-gray-800">${maintenanceCount} veículos</span>
       </div>
     `;
     updateOperationChart();
@@ -732,7 +884,6 @@ function calculateOperationData() {
 
 function formatDateTime() {
   const now = new Date();
-
   const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   const dayName = daysOfWeek[now.getDay()];
   const day = String(now.getDate()).padStart(2, '0');
@@ -740,10 +891,7 @@ function formatDateTime() {
   const year = now.getFullYear();
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
-
-  const formatted = `SALDO! ${dayName} - ${day}/${month}/${year} às ${hours}:${minutes}`;
-
-  return formatted;
+  return `SALDO! ${dayName} - ${day}/${month}/${year} às ${hours}:${minutes}`;
 }
 
 // Função para copiar texto para a área de transferência
@@ -763,20 +911,12 @@ async function copyToClipboard(text) {
 function downloadImage() {
   const content = document.getElementById('mainContent');
   const buttonContainer = document.querySelector('.button-container');
-
-  // Obter data e hora formatada para a área de transferência
   const formatted = formatDateTime();
-
-  // Copiar data e hora para a área de transferência
   copyToClipboard(formatted);
-
-  // Oculta o contêiner de botões
   if (buttonContainer) {
     buttonContainer.style.display = 'none';
   }
-
   window.scrollTo(0, 0);
-
   setTimeout(() => {
     html2canvas(content, {
       useCORS: true,
@@ -792,7 +932,12 @@ function downloadImage() {
       link.download = 'Saldo dos Veiculos.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
-      // Restaura o contêiner de botões
+      if (buttonContainer) {
+        buttonContainer.style.display = '';
+      }
+    }).catch(err => {
+      console.error('Erro ao baixar imagem:', err);
+      alert('Erro ao baixar imagem: ' + err.message);
       if (buttonContainer) {
         buttonContainer.style.display = '';
       }
@@ -804,20 +949,12 @@ function downloadImage() {
 async function shareImage() {
   const content = document.getElementById('mainContent');
   const buttonContainer = document.querySelector('.button-container');
-
-  // Obter data e hora formatada para a área de transferência
   const formatted = formatDateTime();
-
-  // Copiar data e hora para a área de transferência
   await copyToClipboard(formatted);
-
-  // Oculta o contêiner de botões
   if (buttonContainer) {
     buttonContainer.style.display = 'none';
   }
-
   window.scrollTo(0, 0);
-
   try {
     const canvas = await new Promise(resolve => {
       setTimeout(() => {
@@ -833,10 +970,8 @@ async function shareImage() {
         }).then(canvas => resolve(canvas));
       }, 100);
     });
-
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     const file = new File([blob], 'Saldo dos Veiculos.png', { type: 'image/png' });
-
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -847,9 +982,9 @@ async function shareImage() {
       alert('Seu navegador não suporta compartilhamento de imagem.');
     }
   } catch (err) {
+    console.error('Erro ao compartilhar imagem:', err);
     alert('Erro ao compartilhar: ' + err.message);
   } finally {
-    // Restaura o contêiner de botões
     if (buttonContainer) {
       buttonContainer.style.display = '';
     }
@@ -860,25 +995,19 @@ async function shareImage() {
 // Funções de Controle de Modais
 // ==========================================================================
 
-// Alterna a visibilidade do modal de manutenção
 function toggleMaintenanceModal(show) {
   const modal = document.getElementById('maintenanceModal');
   let backdrop = document.querySelector('.modal-backdrop');
-
   if (modal) {
-    // Adicionar classe modal-content ao contêiner interno
     const modalContent = modal.querySelector('div');
     if (modalContent) {
       modalContent.classList.add('modal-content');
     }
-
-    // Criar ou remover backdrop
     if (show && !backdrop) {
       backdrop = document.createElement('div');
       backdrop.className = 'modal-backdrop';
       document.body.appendChild(backdrop);
     }
-
     modal.classList.toggle('hidden', !show);
     modal.classList.toggle('show', show);
     if (backdrop) {
@@ -890,25 +1019,19 @@ function toggleMaintenanceModal(show) {
   }
 }
 
-// Alterna a visibilidade do modal de materiais
 function toggleMiscModal(show) {
   const modal = document.getElementById('miscModal');
   let backdrop = document.querySelector('.modal-backdrop');
-
   if (modal) {
-    // Adicionar classe modal-content ao contêiner interno
     const modalContent = modal.querySelector('div');
     if (modalContent) {
       modalContent.classList.add('modal-content');
     }
-
-    // Criar ou remover backdrop
     if (show && !backdrop) {
       backdrop = document.createElement('div');
       backdrop.className = 'modal-backdrop';
       document.body.appendChild(backdrop);
     }
-
     modal.classList.toggle('hidden', !show);
     modal.classList.toggle('show', show);
     if (backdrop) {
@@ -924,58 +1047,46 @@ function toggleMiscModal(show) {
 // Configurações de Responsividade
 // ==========================================================================
 
-// Configurações que impactam a responsividade da interface
 function setupResponsiveElements() {
-  // Gráficos com opção 'responsive: true' para adaptação a diferentes tamanhos de tela
-  // Definido nas funções updateOperationChart e renderSummary
-
-  // Modais com classes CSS que se adaptam via media queries
-  // Definido nas funções toggleMaintenanceModal e toggleMiscModal
-
-  // Layout de cartões gerenciado pelo CSS (grid com auto-fit)
-  // Manipulação dinâmica do conteúdo em renderVehicleCards, renderMaterialsCard, renderFuelPricesCard e renderSummary
-
-  // Ajuste de rolagem para captura de imagem em downloadImage e shareImage
-  window.scrollTo(0, 0); // Garante que a captura comece do topo
+  window.scrollTo(0, 0);
 }
 
 // ==========================================================================
 // Inicialização e Eventos
 // ==========================================================================
 
-// Inicializa a aplicação ao carregar o DOM
-document.addEventListener('DOMContentLoaded', () => {
-  initializeDefaultStates();
-  renderMaintenanceModal();
-  renderMiscModal();
-
-  // Criar loader
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOM carregado. Inicializando aplicação...');
   const loader = document.createElement('div');
   loader.className = 'loader';
   document.body.appendChild(loader);
 
-  // Simular carregamento e adicionar classe 'loaded'
+  const isSupabaseInitialized = await initializeSupabase();
+  if (isSupabaseInitialized) {
+    await initializeDefaultStates();
+  } else {
+    initializeDefaultStates();
+  }
+
+  renderMaintenanceModal();
+  renderMiscModal();
+
   setTimeout(() => {
     document.body.classList.add('loaded');
     loader.remove();
-
-    // Adicionar classe 'loaded' aos elementos após o carregamento
     document.querySelectorAll('#mainContent, h1, .button-container').forEach((el, index) => {
       setTimeout(() => {
         el.classList.add('loaded');
       }, index * 50);
     });
-
-    // Forçar exibição imediata dos cartões e seus elementos
     document.querySelectorAll('.modern-card, .modern-card img, .modern-card ul li, .no-image, .maintenance-badge, .chart-card canvas').forEach(el => {
       el.classList.add('loaded');
     });
-
     setupResponsiveElements();
-  }, 500); // Tempo reduzido para carregamento rápido
+    console.log('Aplicação inicializada.');
+  }, 500);
 });
 
-// Configura eventos de interação
 document.getElementById('fileInput').addEventListener('change', (event) => {
   processFile(event.target.files[0]);
 });
@@ -990,33 +1101,3 @@ document.getElementById('exportDataBtn').addEventListener('click', exportDataToF
 document.getElementById('importDataInput').addEventListener('change', (event) => {
   importDataFromFile(event.target.files[0]);
 });
-
-function saveStateToLocalStorage() {
-  const data = { maintenanceState, materialsState };
-  localStorage.setItem('appState', JSON.stringify(data));
-}
-
-function loadStateFromLocalStorage() {
-  const saved = localStorage.getItem('appState');
-  if (saved) {
-    try {
-      const { maintenanceState: savedMaintenance, materialsState: savedMaterials } = JSON.parse(saved);
-      for (const plate in savedMaintenance) {
-        if (desiredPlates.includes(plate) && typeof savedMaintenance[plate] === 'boolean') {
-          maintenanceState[plate] = savedMaintenance[plate];
-        }
-      }
-      const validMaterials = ['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'];
-      for (const material in savedMaterials) {
-        if (validMaterials.includes(material)) {
-          const { current, stock } = savedMaterials[material];
-          if (Number.isInteger(current) && Number.isInteger(stock) && current >= 0 && stock >= 0) {
-            materialsState[material] = { current, stock };
-          }
-        }
-      }
-    } catch (err) {
-      console.error('Erro ao carregar dados do localStorage:', err);
-    }
-  }
-}
