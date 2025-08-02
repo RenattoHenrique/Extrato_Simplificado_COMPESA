@@ -56,7 +56,19 @@ async function initializeSupabase() {
   }
 
   if (typeof supabaseClient === 'undefined') {
-    console.error('Erro: Biblioteca Supabase (@supabase/supabase-js) não encontrada. Verifique o CDN no index.html.');
+    console.error('Erro: Biblioteca Supabase (@supabase/supabase-js) não encontrada.');
+    console.log('Verifique se o CDN está incluído no index.html: <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>');
+    console.log('Testando carregamento do CDN...');
+    try {
+      const response = await fetch('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
+      if (!response.ok) {
+        console.error(`Falha ao carregar CDN do Supabase: Status ${response.status}`);
+      } else {
+        console.log('CDN acessível, mas supabaseClient não foi definido. Possível problema de timing ou cache.');
+      }
+    } catch (err) {
+      console.error('Erro ao testar CDN do Supabase:', err.message);
+    }
     alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas. Verifique o console para detalhes.');
     return false;
   }
