@@ -40,8 +40,6 @@ body.loaded {
 
 /* Fundo e animação do contêiner principal */
 #mainContent {
-  background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
-  padding: 1.5rem;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
@@ -58,9 +56,6 @@ body.loaded {
 
 /* Estilo do título principal com animação */
 h1 {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  font-weight: 700;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.2s, transform 0.5s ease-in-out 0.2s;
@@ -73,38 +68,8 @@ h1.loaded {
 }
 
 /* ==========================================================================
-   Grid de Cartões
-   ========================================================================== */
-
-/* Layout em grid para cartões e resumos */
-#content, #summaryContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1rem;
-}
-
-/* ==========================================================================
    Cartão Principal
    ========================================================================== */
-
-/* Estilo base dos cartões */
-.modern-card {
-  background: #FFFFFF;
-  border-radius: 8px;
-  padding: 12px;
-  padding-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out, opacity 0.5s ease-in-out;
-  max-width: 100%;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.modern-card.loaded {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* Animação escalonada para cartões */
 #content .modern-card:nth-child(1) { transition-delay: 0.1s; }
@@ -121,18 +86,8 @@ h1.loaded {
 #summaryContainer .modern-card:nth-child(2) { transition-delay: 0.4s; }
 #summaryContainer .modern-card:nth-child(3) { transition-delay: 0.5s; }
 
-.modern-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
 /* Imagens nos cartões */
 .modern-card img {
-  border-radius: 8px;
-  max-width: 100%;
-  height: 8rem;
-  object-fit: cover;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.5s ease-in-out;
   opacity: 0;
 }
@@ -144,24 +99,6 @@ h1.loaded {
 .modern-card:hover img {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Textos nos cartões */
-.modern-card p {
-  margin: 6px 0;
-  color: #444444;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  font-weight: 500;
-  transition: color 0.3s ease-in-out;
-}
-
-.modern-card .text-3xl {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: #059669;
-  transition: color 0.3s ease-in-out;
-  margin-bottom: 8px;
 }
 
 /* Estilo para saldo zero */
@@ -282,24 +219,6 @@ input:checked + .slider:before {
    Cartão de Resumo e Gráficos
    ========================================================================== */
 
-/* Estilo específico para cartões de resumo */
-#summaryContainer .modern-card {
-  max-width: none;
-  width: 100%;
-}
-
-#summaryContainer .modern-card .text-lg {
-  font-size: 0.875rem;
-}
-
-#summaryContainer .modern-card .text-xl {
-  font-size: 1rem;
-}
-
-#summaryContainer .modern-card .text-2xl {
-  font-size: 1.25rem;
-}
-
 /* Estilo do canvas para gráficos */
 .chart-card canvas {
   max-height: 160px;
@@ -313,14 +232,9 @@ input:checked + .slider:before {
 
 /* Contêineres de gráficos de pizza */
 #pieChartContainer, #operationPieChartContainer {
-  max-width: 200px;
+  max-width: 100%;
   max-height: 200px;
   margin: 0 auto;
-}
-
-#balancePieChart, #operationPieChart {
-  width: 100% !important;
-  height: 100% !important;
 }
 
 /* ==========================================================================
@@ -329,8 +243,6 @@ input:checked + .slider:before {
 
 /* Estilo das listas dentro dos cartões */
 .modern-card ul li {
-  padding: 0.25rem 0;
-  border-bottom: 1px solid #E5E7EB;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   opacity: 0;
   transform: translateY(10px);
@@ -345,19 +257,7 @@ input:checked + .slider:before {
 .modern-card ul li:nth-child(2) { transition-delay: 0.2s; }
 .modern-card ul li:nth-child(3) { transition-delay: 0.3s; }
 
-.modern-card .mb-4 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modern-card ul li:last-child {
-  border-bottom: none;
-}
-
 .modern-card ul li img {
-  width: 2rem;
-  height: 2rem;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -366,17 +266,12 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-.modern-card ul li span.text-lg {
-  font-size: 0.875rem;
-}
-
 /* ==========================================================================
    Fallback de Imagem
    ========================================================================== */
 
 /* Estilo para imagens não disponíveis */
 .no-image {
-  height: 8rem;
   background: linear-gradient(135deg, #E5E7EB 0%, #D1D5DB 100%);
   display: flex;
   align-items: center;
@@ -411,15 +306,6 @@ input:checked + .slider:before {
 
 /* Contêiner de botões */
 .button-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background-color: #F1F1F1;
-  border-radius: 0.5rem;
-  width: 100%;
-  max-width: 64rem;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
@@ -430,58 +316,8 @@ input:checked + .slider:before {
   transform: translateY(0);
 }
 
-/* Estilo dos botões personalizados */
-.custom-btn {
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  background-color: #FFFFFF;
-  border: 1px solid #D1D5DB;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  text-align: center;
-  min-width: 8rem;
-  max-width: 12rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.25rem;
-  opacity: 0.8;
-}
-
-.custom-btn:hover, .custom-btn:focus {
-  background-color: #DBEAFE;
-  border-color: #059669;
-  transform: scale(1.05);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  opacity: 1;
-}
-
-.custom-btn.bg-gray-200 {
-  background-color: #E5E7EB;
-  opacity: 0.8;
-}
-
-.custom-btn.bg-gray-200:hover {
-  background-color: #C4B5FD;
-  border-color: #8B5CF6;
-  opacity: 1;
-}
-
 /* Ícones de upload */
-.upload-icon {
-  padding: 0.5rem;
-  min-width: auto;
-  width: 2.25rem;
-  height: 2.25rem;
-}
-
 .upload-icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  stroke: #374151;
   transition: stroke 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -490,49 +326,9 @@ input:checked + .slider:before {
   transform: scale(1.1);
 }
 
-.upload-icon input[type="file"] {
-  display: none;
-}
-
 /* ==========================================================================
    Modais
    ========================================================================== */
-
-/* Estrutura base dos modais */
-#maintenanceModal, #miscModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  display: none;
-}
-
-#maintenanceModal.show, #miscModal.show {
-  display: block;
-}
-
-/* Conteúdo dos modais */
-#maintenanceModal .modal-content, #miscModal .modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
-  max-width: 90vw;
-  width: 100%;
-  background: #FFFFFF;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-}
-
-#maintenanceModal.show .modal-content, #miscModal.show .modal-content {
-  opacity: 1;
-  transform: translate(-50%, -50%);
-}
 
 /* Backdrop dos modais */
 .modal-backdrop {
@@ -569,68 +365,18 @@ input:checked + .slider:before {
   100% { transform: rotate(360deg); }
 }
 
-/* Animação de pulsação */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
 /* ==========================================================================
    Responsividade (Media Queries)
    ========================================================================== */
 
-/* Ajustes para telas menores que 640px */
-@media (max-width: 640px) {
-  /* Grid de cartões: uma coluna em telas pequenas */
-  #content, #summaryContainer {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  /* Contêiner de botões: layout em coluna para centralização */
-  .button-container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
 /* Ajustes para telas maiores que 640px */
 @media (min-width: 640px) {
-  /* Contêiner principal: maior padding em telas grandes */
-  #mainContent {
-    padding: 3rem;
-  }
-
-  /* Título principal: maior tamanho de fonte */
-  h1 {
-    font-size: 2.25rem;
-  }
-
-  /* Cartão principal: maior arredondamento, padding e largura máxima */
-  .modern-card {
-    border-radius: 12px;
-    padding: 16px;
-    padding-bottom: 32px;
-    max-width: 20rem;
-  }
-
-  /* Imagens nos cartões: maior altura */
+  /* Imagens nos cartões */
   .modern-card img {
     height: 10rem;
   }
 
-  /* Textos nos cartões: maior tamanho de fonte */
-  .modern-card p {
-    font-size: 1.25rem;
-  }
-
-  /* Textos grandes nos cartões: maior tamanho e margem */
-  .modern-card .text-3xl {
-    font-size: 1.875rem;
-    margin-bottom: 12px;
-  }
-
-  /* Badge de manutenção: maior tamanho e padding */
+  /* Badge de manutenção */
   .maintenance-badge {
     font-size: 0.99rem;
     padding: 4px 12px;
@@ -638,7 +384,7 @@ input:checked + .slider:before {
     height: 24px;
   }
 
-  /* Switch: maior tamanho */
+  /* Switch */
   .switch {
     width: 40px;
     height: 20px;
@@ -653,65 +399,30 @@ input:checked + .slider:before {
     transform: translateX(20px);
   }
 
-  /* Inputs numéricos: maior largura e padding */
+  /* Inputs numéricos */
   #miscList input[type="number"] {
     width: 4rem;
     padding: 4px 8px;
   }
 
-  /* Textos nos cartões de resumo: tamanhos ajustados */
-  #summaryContainer .modern-card .text-lg {
-    font-size: 1rem;
-  }
-
-  #summaryContainer .modern-card .text-xl {
-    font-size: 1.25rem;
-  }
-
-  #summaryContainer .modern-card .text-2xl {
-    font-size: 1.5rem;
-  }
-
-  /* Gráficos: maior altura do canvas */
+  /* Gráficos */
   .chart-card canvas {
     max-height: 200px;
   }
 
-  /* Imagens nas listas dos cartões: maior tamanho */
+  /* Imagens nas listas dos cartões */
   .modern-card ul li img {
     width: 2.5rem;
     height: 2.5rem;
   }
 
-  /* Textos nas listas dos cartões: maior tamanho de fonte */
-  .modern-card ul li span.text-lg {
-    font-size: 1rem;
-  }
-
-  /* Fallback de imagem: maior altura */
+  /* Fallback de imagem */
   .no-image {
     height: 10rem;
   }
-
-  /* Conteúdo dos modais: maior largura e padding */
-  #maintenanceModal .modal-content, #miscModal .modal-content {
-    max-width: 28rem;
-    padding: 1.5rem;
-  }
 }
 
-#manualBtn .tooltip::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent transparent #E5E7EB;
-}
-
-/* Adjust tooltip position on small screens */
+/* Ajuste do tooltip em telas pequenas */
 @media (max-width: 640px) {
   #manualBtn .tooltip {
     right: auto;
