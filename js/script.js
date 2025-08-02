@@ -40,7 +40,12 @@ let supabase = null;
 // Função para inicializar o cliente Supabase com retry
 async function initializeSupabase() {
   console.log('Tentando inicializar Supabase...');
-  const maxAttempts = 5;
+  console.log('Variáveis de ambiente:', {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '[presente]' : '[ausente]'
+  });
+
+  const maxAttempts = 10;
   let attempts = 0;
 
   return new Promise((resolve) => {
@@ -53,8 +58,20 @@ async function initializeSupabase() {
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
           );
           console.log('Cliente Supabase inicializado com sucesso.');
+          // Testar conexão com uma consulta simples
+          supabase.from('maintenance_state').select('plate').limit(1)
+            .then(({ error }) => {
+              if (error) {
+                console.error('Erro ao testar conexão com Supabase:', error.message);
+                alert('Erro ao conectar ao Supabase: ' + error.message);
+                supabase = null;
+                resolve(false);
+              } else {
+                console.log('Conexão com Supabase testada com sucesso.');
+                resolve(true);
+              }
+            });
           clearInterval(interval);
-          resolve(true);
         } catch (err) {
           console.error('Erro ao criar cliente Supabase:', err.message);
           clearInterval(interval);
@@ -62,11 +79,13 @@ async function initializeSupabase() {
         }
       } else if (attempts >= maxAttempts) {
         console.error('Falha ao carregar biblioteca Supabase após', maxAttempts, 'tentativas.');
-        alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas.');
+        alert('Erro: Biblioteca Supabase não encontrada. Algumas funcionalidades podem estar limitadas. Verifique o console para detalhes.');
         clearInterval(interval);
         resolve(false);
+      } else {
+        console.log(`Tentativa ${attempts}/${maxAttempts}: supabaseClient não encontrado.`);
       }
-    }, 500);
+    }, 1000); // Aumentado para 1000ms para dar mais tempo ao CDN
   });
 }
 
@@ -149,12 +168,12 @@ function processFile(file) {
       renderMaintenanceModal();
       renderMiscModal();
     } catch (err) {
-      console.error('Erro ao processar arquivo:', err);
+      console.error('Erro ao processar arquivo:', err.message);
       showError('Erro ao processar o arquivo: ' + err.message);
     }
   };
   reader.onerror = function (err) {
-    console.error('Erro ao ler arquivo:', err);
+    console.error('Erro ao ler arquivo:', err.message);
     showError('Erro ao ler o arquivo: ' + err.message);
   };
   reader.readAsText(file);
@@ -176,7 +195,7 @@ async function loadStateFromSupabase() {
     const { data: maintenanceData, error: maintenanceError } = await supabase
       .from('maintenance_state')
       .select('plate, is_in_maintenance');
-    if (maintenanceError) throw maintenanceError;
+    if (maintenanceError) throw new Error(`Erro em maintenance_state: ${maintenanceError.message}`);
 
     maintenanceData.forEach(({ plate, is_in_maintenance }) => {
       if (desiredPlates.includes(plate)) {
@@ -188,7 +207,7 @@ async function loadStateFromSupabase() {
     const { data: materialsData, error: materialsError } = await supabase
       .from('materials_state')
       .select('material_id, current_quantity, stock_quantity');
-    if (materialsError) throw materialsError;
+    if (materialsError) throw new Error(`Erro em materials_state: ${materialsError.message}`);
 
     materialsData.forEach(({ material_id, current_quantity, stock_quantity }) => {
       if (materialsState.hasOwnProperty(material_id)) {
@@ -211,7 +230,7 @@ async function loadStateFromSupabase() {
     console.log('Dados carregados do Supabase com sucesso.');
   } catch (err) {
     console.error('Erro ao carregar dados do Supabase:', err.message);
-    alert('Erro ao carregar dados do banco. Usando valores padrão.');
+    alert('Erro ao carregar dados do banco: ' + err.message + '. Usando valores padrão.');
   }
 }
 
@@ -219,7 +238,7 @@ async function loadStateFromSupabase() {
 async function saveMaintenanceStateToSupabase() {
   if (!supabase) {
     console.warn('Supabase não disponível. Dados não salvos.');
-    alert('Erro: Supabase não disponível. Dados não foram salvos.');
+    alert('Erro: Supabase não disponível. Dados não foram salvos. Verifique o console para detalhes.');
     return;
   }
   try {
@@ -232,7 +251,7 @@ async function saveMaintenanceStateToSupabase() {
     const { error } = await supabase
       .from('maintenance_state')
       .upsert(updates, { onConflict: 'plate' });
-    if (error) throw error;
+    if (error) throw new Error(`Erro ao salvar maintenance_state: ${error.message}`);
 
     alert('Manutenção salva com sucesso!');
     console.log('maintenance_state salvo no Supabase:', updates);
@@ -246,7 +265,7 @@ async function saveMaintenanceStateToSupabase() {
 async function saveMaterialsStateToSupabase() {
   if (!supabase) {
     console.warn('Supabase não disponível. Dados não salvos.');
-    alert('Erro: Supabase não disponível. Dados não foram salvos.');
+    alert('Erro: Supabase não disponível. Dados não foram salvos. Verifique o console para detalhes.');
     return;
   }
   try {
@@ -260,7 +279,7 @@ async function saveMaterialsStateToSupabase() {
     const { error } = await supabase
       .from('materials_state')
       .upsert(updates, { onConflict: 'material_id' });
-    if (error) throw error;
+    if (error) throw new Error(`Erro ao salvar materials_state: ${error.message}`);
 
     alert('Materiais salvos com sucesso!');
     console.log('materials_state salvo no Supabase:', updates);
