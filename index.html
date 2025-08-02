@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frota CMA e CPR SUL</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="/dist/output.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="./css/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-white flex flex-col items-center min-h-screen p-8 gap-6">
   
@@ -40,7 +41,7 @@
 
   <!-- Modal de Manutenção -->
   <div id="maintenanceModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md modal-content">
       <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciar Manutenção</h2>
       <ul id="maintenanceList" class="space-y-2 mb-4"></ul>
       <button id="closeModalBtn" class="custom-btn bg-gray-200 hover:bg-violet-300">Fechar</button>
@@ -49,7 +50,7 @@
 
   <!-- Modal de Materiais Diversos -->
   <div id="miscModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md modal-content">
       <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciar Materiais Diversos</h2>
       <ul id="miscList" class="space-y-4 mb-4"></ul>
       <button id="closeMiscModalBtn" class="custom-btn bg-gray-200 hover:bg-violet-300">Fechar</button>
@@ -78,6 +79,13 @@
     </button>
   </footer>
 
+  <script>
+    // Definir variáveis de ambiente para o Supabase
+    window.env = {
+      SUPABASE_URL: 'https://wnuialureqofvgefdfol.supabase.co',
+      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
+    };
+  </script>
   <script src="./js/script.js"></script>
   <script>
     // Event listener to open the user manual PDF
@@ -86,5 +94,4 @@
     });
   </script>
 </body>
-
 </html>
