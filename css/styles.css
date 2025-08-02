@@ -2,24 +2,25 @@
    Estilos Globais
    ========================================================================== */
 
-/* Configurações gerais do documento */
 body {
   font-family: 'Poppins', sans-serif;
-  background: #204499;
+  background-color: #204499;
+  color: #374151;
+  min-height: 100vh;
+  margin: 0;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
 body.loaded {
   opacity: 1;
-  background: #204499;
+  background-color: #204499;
 }
 
 /* ==========================================================================
-   Loader
+   Loader de Carregamento
    ========================================================================== */
 
-/* Estilo do loader de carregamento inicial */
 .loader {
   position: fixed;
   top: 50%;
@@ -31,17 +32,18 @@ body.loaded {
   border-top: 4px solid transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 /* ==========================================================================
    Contêiner Principal
    ========================================================================== */
 
-/* Fundo e animação do contêiner principal */
 #mainContent {
-  background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+  background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
+  border-radius: 12px;
   padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
@@ -56,11 +58,11 @@ body.loaded {
    Título Principal
    ========================================================================== */
 
-/* Estilo do título principal com animação */
 h1 {
   font-size: 1.875rem;
-  line-height: 2.25rem;
   font-weight: 700;
+  color: #204499;
+  text-align: center;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.2s, transform 0.5s ease-in-out 0.2s;
@@ -69,14 +71,12 @@ h1 {
 h1.loaded {
   opacity: 1;
   transform: translateY(0);
-  color: #204499;
 }
 
 /* ==========================================================================
    Grid de Cartões
    ========================================================================== */
 
-/* Layout em grid para cartões e resumos */
 #content, #summaryContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -84,19 +84,16 @@ h1.loaded {
 }
 
 /* ==========================================================================
-   Cartão Principal
+   Cartões
    ========================================================================== */
 
-/* Estilo base dos cartões */
 .modern-card {
   background: #FFFFFF;
   border-radius: 8px;
-  padding: 12px;
-  padding-bottom: 24px;
+  padding: 12px 12px 24px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out, opacity 0.5s ease-in-out;
-  max-width: 100%;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.5s ease-in-out;
   opacity: 0;
   transform: translateY(20px);
 }
@@ -106,7 +103,12 @@ h1.loaded {
   transform: translateY(0);
 }
 
-/* Animação escalonada para cartões */
+.modern-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Animações escalonadas para cartões */
 #content .modern-card:nth-child(1) { transition-delay: 0.1s; }
 #content .modern-card:nth-child(2) { transition-delay: 0.2s; }
 #content .modern-card:nth-child(3) { transition-delay: 0.3s; }
@@ -121,19 +123,14 @@ h1.loaded {
 #summaryContainer .modern-card:nth-child(2) { transition-delay: 0.4s; }
 #summaryContainer .modern-card:nth-child(3) { transition-delay: 0.5s; }
 
-.modern-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
 /* Imagens nos cartões */
 .modern-card img {
-  border-radius: 8px;
   max-width: 100%;
   height: 8rem;
   object-fit: cover;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
   opacity: 0;
 }
 
@@ -143,54 +140,47 @@ h1.loaded {
 
 .modern-card:hover img {
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Textos nos cartões */
 .modern-card p {
   margin: 6px 0;
-  color: #444444;
   font-size: 1rem;
-  line-height: 1.5rem;
   font-weight: 500;
-  transition: color 0.3s ease-in-out;
+  color: #444444;
 }
 
 .modern-card .text-3xl {
-  font-weight: 700;
   font-size: 1.5rem;
+  font-weight: 700;
   color: #059669;
-  transition: color 0.3s ease-in-out;
   margin-bottom: 8px;
 }
 
-/* Estilo para saldo zero */
 .zero-balance {
-  color: #d97706 !important;
+  color: #D97706 !important;
 }
 
-/* Indicador de manutenção */
+/* Badge de manutenção */
 .modern-card.maintenance {
   border: 2px solid #EF4444;
 }
 
 .maintenance-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #EF4444;
-  padding: 4px 8px;
-  border-radius: 4px;
   font-size: 0.875rem;
   font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
   margin-top: 6px;
   min-width: 80px;
-  white-space: nowrap;
-  align-self: center;
   height: 20px;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  transform: translateY(10px);
   opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .maintenance-badge.loaded {
@@ -198,142 +188,16 @@ h1.loaded {
   transform: translateY(0);
 }
 
-/* ==========================================================================
-   Switch
-   ========================================================================== */
-
-/* Estilo do componente switch */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 18px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: background-color 0.4s ease-in-out;
-  border-radius: 18px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: transform 0.4s ease-in-out;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #059669;
-}
-
-input:checked + .slider:before {
-  transform: translateX(18px);
-}
-
-/* ==========================================================================
-   Inputs de Materiais
-   ========================================================================== */
-
-/* Estilo dos inputs numéricos */
-#miscList input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-  -webkit-appearance: none;
-  border: 1px solid #0066ff;
-  border-radius: 4px;
-  padding: 4px 6px;
-  width: 3.5rem;
-  text-align: center;
-  font-size: 0.875rem;
-  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-#miscList input[type="number"]::-webkit-inner-spin-button,
-#miscList input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-#miscList input[type="number"]:focus {
-  outline: none;
-  border-color: #059669;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-}
-
-/* ==========================================================================
-   Cartão de Resumo e Gráficos
-   ========================================================================== */
-
-/* Estilo específico para cartões de resumo */
-#summaryContainer .modern-card {
-  max-width: none;
-  width: 100%;
-}
-
-#summaryContainer .modern-card .text-lg {
-  font-size: 0.875rem;
-}
-
-#summaryContainer .modern-card .text-xl {
-  font-size: 1rem;
-}
-
-#summaryContainer .modern-card .text-2xl {
-  font-size: 1.25rem;
-}
-
-/* Estilo do canvas para gráficos */
-.chart-card canvas {
-  max-height: 160px;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out 0.3s;
-}
-
-.chart-card canvas.loaded {
-  opacity: 1;
-}
-
-/* Contêineres de gráficos de pizza */
-#pieChartContainer, #operationPieChartContainer {
-  max-width: 200px;
-  max-height: 200px;
-  margin: 0 auto;
-}
-
-#balancePieChart, #operationPieChart {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ==========================================================================
-   Lista de Materiais nos Cartões
-   ========================================================================== */
-
-/* Estilo das listas dentro dos cartões */
+/* Listas nos cartões */
 .modern-card ul li {
-  padding: 0.25rem 0;
+  padding: 4px 0;
   border-bottom: 1px solid #E5E7EB;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   opacity: 0;
   transform: translateY(10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .modern-card ul li.loaded {
@@ -345,12 +209,6 @@ input:checked + .slider:before {
 .modern-card ul li:nth-child(2) { transition-delay: 0.2s; }
 .modern-card ul li:nth-child(3) { transition-delay: 0.3s; }
 
-.modern-card .mb-4 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .modern-card ul li:last-child {
   border-bottom: none;
 }
@@ -358,58 +216,13 @@ input:checked + .slider:before {
 .modern-card ul li img {
   width: 2rem;
   height: 2rem;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.modern-card ul li img.loaded {
-  opacity: 1;
-}
-
-.modern-card ul li span.text-lg {
-  font-size: 0.875rem;
-}
-
-/* ==========================================================================
-   Fallback de Imagem
-   ========================================================================== */
-
-/* Estilo para imagens não disponíveis */
-.no-image {
-  height: 8rem;
-  background: linear-gradient(135deg, #E5E7EB 0%, #D1D5DB 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6B7280;
-  font-style: italic;
-  border-radius: 8px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.no-image.loaded {
-  opacity: 1;
-}
-
-.no-image::before {
-  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="%236B7280" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>');
-  margin-right: 0.5rem;
-}
-
-/* Placeholder para imagens em carregamento */
-.modern-card img:not([src]) {
-  background: linear-gradient(90deg, #E5E7EB 25%, #F3F4F6 50%, #E5E7EB 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  object-fit: contain;
 }
 
 /* ==========================================================================
    Botões
    ========================================================================== */
 
-/* Contêiner de botões */
 .button-container {
   display: flex;
   flex-wrap: wrap;
@@ -417,8 +230,7 @@ input:checked + .slider:before {
   gap: 0.75rem;
   padding: 0.75rem;
   background-color: #F1F1F1;
-  border-radius: 0.5rem;
-  width: 100%;
+  border-radius: 8px;
   max-width: 64rem;
   opacity: 0;
   transform: translateY(10px);
@@ -430,7 +242,6 @@ input:checked + .slider:before {
   transform: translateY(0);
 }
 
-/* Estilo dos botões personalizados */
 .custom-btn {
   padding: 0.5rem 1.25rem;
   font-size: 0.875rem;
@@ -438,10 +249,8 @@ input:checked + .slider:before {
   color: #374151;
   background-color: #FFFFFF;
   border: 1px solid #D1D5DB;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  text-align: center;
   min-width: 8rem;
   max-width: 12rem;
   display: flex;
@@ -449,6 +258,7 @@ input:checked + .slider:before {
   justify-content: center;
   height: 2.25rem;
   opacity: 0.8;
+  transition: all 0.3s ease-in-out;
 }
 
 .custom-btn:hover, .custom-btn:focus {
@@ -461,16 +271,26 @@ input:checked + .slider:before {
 
 .custom-btn.bg-gray-200 {
   background-color: #E5E7EB;
-  opacity: 0.8;
 }
 
 .custom-btn.bg-gray-200:hover {
   background-color: #C4B5FD;
   border-color: #8B5CF6;
+}
+
+.custom-btn.bg-green-600, .confirm-btn {
+  background-color: #059669;
+  color: #FFFFFF;
+  border: none;
   opacity: 1;
 }
 
-/* Ícones de upload */
+.custom-btn.bg-green-600:hover, .confirm-btn:hover {
+  background-color: #047857;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .upload-icon {
   padding: 0.5rem;
   min-width: auto;
@@ -495,52 +315,117 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
+   Switch
+   ========================================================================== */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #CCCCCC;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: background-color 0.4s ease-in-out;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.4s ease-in-out;
+}
+
+input:checked + .slider {
+  background-color: #059669;
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+/* ==========================================================================
+   Inputs de Materiais
+   ========================================================================== */
+
+#miscList input[type="number"] {
+  width: 3.5rem;
+  padding: 4px 6px;
+  border: 1px solid #0066FF;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-align: center;
+  appearance: textfield;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#miscList input[type="number"]::-webkit-inner-spin-button,
+#miscList input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#miscList input[type="number"]:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+/* ==========================================================================
    Modais
    ========================================================================== */
 
-/* Estrutura base dos modais */
 #maintenanceModal, #miscModal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 1000;
   display: none;
 }
 
 #maintenanceModal.show, #miscModal.show {
-  display: block;
+  display: flex;
 }
 
-/* Conteúdo dos modais */
-#maintenanceModal .modal-content, #miscModal .modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
-  max-width: 90vw;
-  width: 100%;
+.modal-content {
   background: #FFFFFF;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.5rem;
+  max-width: 90vw;
+  width: 100%;
+  max-width: 28rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   opacity: 0;
+  transform: translateY(-20px);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
 #maintenanceModal.show .modal-content, #miscModal.show .modal-content {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translateY(0);
 }
 
-/* Backdrop dos modais */
 .modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
   opacity: 0;
@@ -554,83 +439,137 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
+   Gráficos
+   ========================================================================== */
+
+.chart-card canvas {
+  max-height: 160px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.3s;
+}
+
+.chart-card canvas.loaded {
+  opacity: 1;
+}
+
+#pieChartContainer, #operationPieChartContainer {
+  max-width: 200px;
+  max-height: 200px;
+  margin: 0 auto;
+}
+
+#balancePieChart, #operationPieChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ==========================================================================
+   Fallback de Imagem
+   ========================================================================== */
+
+.no-image {
+  height: 8rem;
+  background: linear-gradient(135deg, #E5E7EB, #D1D5DB);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6B7280;
+  font-style: italic;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.no-image.loaded {
+  opacity: 1;
+}
+
+.no-image::before {
+  content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="%236B7280" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>');
+  margin-right: 0.5rem;
+}
+
+.modern-card img:not([src]) {
+  background: linear-gradient(90deg, #E5E7EB 25%, #F3F4F6 50%, #E5E7EB 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ==========================================================================
    Animações
    ========================================================================== */
 
-/* Animação de shimmer para placeholders */
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Animação de rotação para o loader */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Animação de pulsação */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
 }
 
 /* ==========================================================================
-   Responsividade (Media Queries)
+   Responsividade
    ========================================================================== */
 
-/* Ajustes para telas menores que 640px */
 @media (max-width: 640px) {
-  /* Grid de cartões: uma coluna em telas pequenas */
   #content, #summaryContainer {
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
 
-  /* Contêiner de botões: layout em coluna para centralização */
   .button-container {
     flex-direction: column;
     align-items: center;
   }
-}
 
-/* Ajustes para telas maiores que 640px */
-@media (min-width: 640px) {
-  /* Contêiner principal: maior padding em telas grandes */
-  #mainContent {
-    padding: 3rem;
+  h1 {
+    font-size: 1.5rem;
   }
 
-  /* Título principal: maior tamanho de fonte */
+  .modern-card {
+    padding: 8px 8px 16px;
+  }
+
+  .modern-card img {
+    height: 6rem;
+  }
+}
+
+@media (min-width: 640px) {
+  #mainContent {
+    padding: 2rem;
+  }
+
   h1 {
     font-size: 2.25rem;
   }
 
-  /* Cartão principal: maior arredondamento, padding e largura máxima */
   .modern-card {
     border-radius: 12px;
-    padding: 16px;
-    padding-bottom: 32px;
+    padding: 16px 16px 32px;
     max-width: 20rem;
   }
 
-  /* Imagens nos cartões: maior altura */
   .modern-card img {
     height: 10rem;
   }
 
-  /* Textos nos cartões: maior tamanho de fonte */
   .modern-card p {
     font-size: 1.25rem;
   }
 
-  /* Textos grandes nos cartões: maior tamanho e margem */
   .modern-card .text-3xl {
     font-size: 1.875rem;
-    margin-bottom: 12px;
   }
 
-  /* Badge de manutenção: maior tamanho e padding */
   .maintenance-badge {
     font-size: 0.99rem;
     padding: 4px 12px;
@@ -638,7 +577,6 @@ input:checked + .slider:before {
     height: 24px;
   }
 
-  /* Switch: maior tamanho */
   .switch {
     width: 40px;
     height: 20px;
@@ -653,77 +591,8 @@ input:checked + .slider:before {
     transform: translateX(20px);
   }
 
-  /* Inputs numéricos: maior largura e padding */
   #miscList input[type="number"] {
     width: 4rem;
-    padding: 4px 8px;
-  }
-
-  /* Textos nos cartões de resumo: tamanhos ajustados */
-  #summaryContainer .modern-card .text-lg {
-    font-size: 1rem;
-  }
-
-  #summaryContainer .modern-card .text-xl {
-    font-size: 1.25rem;
-  }
-
-  #summaryContainer .modern-card .text-2xl {
-    font-size: 1.5rem;
-  }
-
-  /* Gráficos: maior altura do canvas */
-  .chart-card canvas {
-    max-height: 200px;
-  }
-
-  /* Imagens nas listas dos cartões: maior tamanho */
-  .modern-card ul li img {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  /* Textos nas listas dos cartões: maior tamanho de fonte */
-  .modern-card ul li span.text-lg {
-    font-size: 1rem;
-  }
-
-  /* Fallback de imagem: maior altura */
-  .no-image {
-    height: 10rem;
-  }
-
-  /* Conteúdo dos modais: maior largura e padding */
-  #maintenanceModal .modal-content, #miscModal .modal-content {
-    max-width: 28rem;
-    padding: 1.5rem;
-  }
-}
-
-#manualBtn .tooltip::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent transparent #E5E7EB;
-}
-
-/* Adjust tooltip position on small screens */
-@media (max-width: 640px) {
-  #manualBtn .tooltip {
-    right: auto;
-    top: 3rem;
-    transform: translateX(-50%);
-    left: 50%;
-  }
-  #manualBtn .tooltip::after {
-    right: auto;
-    top: -6px;
-    transform: translateX(-50%);
-    left: 50%;
-    border-color: transparent transparent #E5E7EB transparent;
+    padding: 6px 8px;
   }
 }
