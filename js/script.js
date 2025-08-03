@@ -1002,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     setupResponsiveElements();
-  }, 500);
+  }, 100);
 });
 
 // Configura eventos de interação
