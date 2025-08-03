@@ -12,6 +12,7 @@ Esse projeto foi desenvolvido por mim e tem a função de facilitar a gestão de
 ## Tecnologias
 - [Insira tecnologias, ex.: HTML, CSS, JavaScript]
 - Hospedagem: Netlify
+- Banco de Dados: Supabase
 
 ## Como Usar
 Acesse o sistema, carregue um arquivo Excel e gerencie os dados.
