@@ -1,4 +1,14 @@
 // ==========================================================================
+// Configuração do Supabase
+// ==========================================================================
+
+// O objeto `supabase` já está disponível globalmente via CDN
+const supabase = window.supabase.createClient(
+  'https://mqyhqkyrttqkldslifed.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xeWhxa3lydHRxa2xkc2xpZmVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxODA0NDYsImV4cCI6MjA2OTc1NjQ0Nn0.PbbfeZAknDu7DvggU_tgCkgoJ9oEJzIH-Sq40PeYOzQ'
+);
+
+// ==========================================================================
 // Dados Iniciais
 // ==========================================================================
 
@@ -39,8 +49,7 @@ const fuelPrices = {
 // ==========================================================================
 
 // Inicializa os estados padrão de manutenção e materiais
-
-function initializeDefaultStates() {
+async function initializeDefaultStates() {
   maintenanceState = {};
   desiredPlates.forEach(plate => {
     maintenanceState[plate] = false;
@@ -50,78 +59,12 @@ function initializeDefaultStates() {
     'Gas_Cozinha': { current: 0, stock: 0 },
     'Oleo_Maquina': { current: 0, stock: 0 }
   };
-  loadStateFromLocalStorage();
+  await loadStateFromSupabase();
 }
 
 // ==========================================================================
 // Funções de Manipulação de Arquivos
 // ==========================================================================
-
-// Exporta os dados de manutenção e materiais para um arquivo .txt
-function exportDataToFile() {
-  const data = {
-    maintenanceState,
-    materialsState
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'BancoDado.txt';
-  link.click();
-  URL.revokeObjectURL(link.href);
-}
-
-// Importa dados de um arquivo .txt e atualiza a interface
-
-function importDataFromFile(file) {
-  if (!file) {
-    console.log('Seleção de arquivo cancelada. Mantendo os dados atuais.');
-    return;
-  }
-
-  if (!file.name.endsWith('.txt')) {
-    alert('Por favor, selecione um arquivo .txt válido.');
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      maintenanceState = { ...maintenanceState, ...data.maintenanceState };
-      materialsState = { ...materialsState, ...data.materialsState };
-      Object.keys(materialsState).forEach(key => {
-        if (!data.materialsState || !data.materialsState[key]) return;
-        materialsState[key].current = Number.isInteger(data.materialsState[key].current) ? data.materialsState[key].current : materialsState[key].current;
-        materialsState[key].stock = Number.isInteger(data.materialsState[key].stock) ? data.materialsState[key].stock : materialsState[key].stock;
-      });
-      saveStateToLocalStorage();
-      const contentDiv = document.getElementById('content');
-      const summaryContainer = document.getElementById('summaryContainer');
-      contentDiv.innerHTML = '';
-      summaryContainer.innerHTML = '';
-      if (currentTable) {
-        renderVehicleCards(currentTable);
-        renderMaterialsCard();
-        renderSummary(currentTable);
-      } else {
-        renderMaterialsCard();
-        renderFuelPricesCard();
-      }
-      renderMaintenanceModal();
-      renderMiscModal();
-      alert('Dados importados com sucesso!');
-    } catch (err) {
-      console.error('Erro ao importar BancoDado.txt:', err);
-      alert('Erro ao importar o arquivo. Verifique se é um BancoDado.txt válido.');
-    }
-  };
-  reader.onerror = function (err) {
-    console.error('Erro ao ler BancoDado.txt:', err);
-    alert('Erro ao ler o arquivo.');
-  };
-  reader.readAsText(file);
-}
 
 // Processa um arquivo HTML ou XLS para extrair dados de saldo
 function processFile(file) {
@@ -154,13 +97,6 @@ function processFile(file) {
       if (!table) {
         console.error('Tabela .boxedBody não encontrada no arquivo.');
         showError('Erro: O arquivo não contém uma tabela válida com a classe "boxedBody".');
-        return;
-      }
-
-      const firstRow = table.querySelector('tr.LinhaImpar, tr.LinhaPar');
-      if (!firstRow || firstRow.cells.length < 14) {
-        console.error('Tabela inválida: menos de 14 colunas ou nenhuma linha válida encontrada.');
-        showError('Erro: A tabela não contém a coluna de saldo (coluna 13). Verifique o formato do arquivo.');
         return;
       }
 
@@ -307,21 +243,21 @@ function renderMaterialsCard() {
     <ul class="space-y-4 text-gray-700 text-sm">
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/Agua_Mineral.png');"/>
+          <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Agua_Mineral.png');"/>
           <span>Água Mineral</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current} / ${materialsState['Agua_Mineral'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/Gas_Cozinha.png');"/>
+          <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Gas_Cozinha.png');"/>
           <span>Gás de Cozinha</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current} / ${materialsState['Gas_Cozinha'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/Oleo_Maquina.png');"/>
+          <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Oleo_Maquina.png');"/>
           <span>Óleo de Máquina</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current} / ${materialsState['Oleo_Maquina'].stock}</span>
@@ -343,35 +279,35 @@ async function renderFuelPricesCard() {
     <ul class="space-y-4 text-gray-700 text-sm">
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Gasol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de gasolina" onerror="console.error('Erro ao carregar imagem: combust_img/Gasol_Comun.png');"/>
+          <img src="./img/combust_img/Gasol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de gasolina" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Gasol_Comun.png');"/>
           <span>Gasolina C.</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.gasolina)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Diesel_Comum.png" class="w-10 h-10 object-contain loaded" alt="Ícone de diesel" onerror="console.error('Erro ao carregar imagem: combust_img/Diesel_Comum.png');"/>
+          <img src="./img/combust_img/Diesel_Comum.png" class="w-10 h-10 object-contain loaded" alt="Ícone de diesel" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Diesel_Comum.png');"/>
           <span>Diesel C.</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.diesel)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Gás_Natural.png" class="w-10 h-10 object-contain loaded" alt="Ícone de GNV" onerror="console.error('Erro ao carregar imagem: combust_img/Gás_Natural.png');"/>
+          <img src="./img/combust_img/Gás_Natural.png" class="w-10 h-10 object-contain loaded" alt="Ícone de GNV" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Gás_Natural.png');"/>
           <span>Gás (GNV)</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.gnv)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Etanol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de etanol" onerror="console.error('Erro ao carregar imagem: combust_img/Etanol_Comun.png');"/>
+          <img src="./img/combust_img/Etanol_Comun.png" class="w-10 h-10 object-contain loaded" alt="Ícone de etanol" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Etanol_Comun.png');"/>
           <span>Etanol C.</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.etanol)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
-          <img src="./img/combust_img/Arla_32.png" class="w-10 h-10 object-contain loaded" alt="Ícone de Arla 32" onerror="console.error('Erro ao carregar imagem: combust_img/Arla_32.png');"/>
+          <img src="./img/combust_img/Arla_32.png" class="w-10 h-10 object-contain loaded" alt="Ícone de Arla 32" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Arla_32.png');"/>
           <span>Arla 32</span>
         </div>
         <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.arla32)}</span>
@@ -513,7 +449,7 @@ async function renderSummary(table) {
 // Funções de Renderização de Modais
 // ==========================================================================
 
-function renderMaintenanceModal() {
+async function renderMaintenanceModal() {
   const maintenanceList = document.getElementById('maintenanceList');
   maintenanceList.innerHTML = '';
 
@@ -532,18 +468,18 @@ function renderMaintenanceModal() {
   });
 
   document.querySelectorAll('#maintenanceList input[type="checkbox"]').forEach(switchInput => {
-    switchInput.addEventListener('change', (event) => {
+    switchInput.addEventListener('change', async (event) => {
       const plate = event.target.getAttribute('data-plate');
       maintenanceState[plate] = event.target.checked;
+      await saveMaintenanceToSupabase(plate, maintenanceState[plate]);
       updateVehicleCard(plate);
       updateQuantityCard();
       updateOperationChart();
-      saveStateToLocalStorage();
     });
   });
 }
 
-function renderMiscModal() {
+async function renderMiscModal() {
   const miscList = document.getElementById('miscList');
   miscList.innerHTML = '';
 
@@ -570,13 +506,13 @@ function renderMiscModal() {
   });
 
   document.querySelectorAll('#miscList input[type="number"]').forEach(input => {
-    input.addEventListener('change', (event) => {
+    input.addEventListener('change', async (event) => {
       const material = event.target.getAttribute('data-material');
       const type = event.target.getAttribute('data-type');
       const value = parseInt(event.target.value) || 0;
       materialsState[material][type] = value;
+      await saveMaterialsToSupabase(material, materialsState[material]);
       updateMaterialsCard();
-      saveStateToLocalStorage();
     });
   });
 }
@@ -621,21 +557,21 @@ function updateMaterialsCard() {
       <ul class="space-y-4 text-gray-700 text-sm">
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="console.error('Erro ao carregar imagem: img/Agua_Mineral.png');"/>
+            <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Agua_Mineral.png');"/>
             <span>Água Mineral</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current} / ${materialsState['Agua_Mineral'].stock}</span>
         </li>
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="console.error('Erro ao carregar imagem: img/Gas_Cozinha.png');"/>
+            <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Gas_Cozinha.png');"/>
             <span>Gás de Cozinha</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current} / ${materialsState['Gas_Cozinha'].stock}</span>
         </li>
         <li class="flex justify-between items-center loaded">
           <div class="flex items-center gap-3">
-            <img src="img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="console.error('Erro ao carregar imagem: img/Oleo_Maquina.png');"/>
+            <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Oleo_Maquina.png');"/>
             <span>Óleo de Máquina</span>
           </div>
           <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current} / ${materialsState['Oleo_Maquina'].stock}</span>
@@ -940,12 +876,106 @@ function setupResponsiveElements() {
 }
 
 // ==========================================================================
+// Funções de Integração com Supabase
+// ==========================================================================
+
+async function saveMaintenanceToSupabase(plate, isInMaintenance) {
+  try {
+    const { error } = await supabase
+      .from('maintenance')
+      .upsert(
+        { plate, is_in_maintenance: isInMaintenance },
+        { onConflict: 'plate' }
+      );
+    if (error) {
+      console.error('Erro ao salvar estado de manutenção no Supabase:', error);
+      showError('Erro ao salvar estado de manutenção: ' + error.message);
+    } else {
+      console.log(`Estado de manutenção salvo para placa ${plate}: ${isInMaintenance}`);
+    }
+  } catch (err) {
+    console.error('Erro inesperado ao salvar manutenção:', err);
+    showError('Erro inesperado ao salvar manutenção: ' + err.message);
+  }
+}
+
+async function saveMaterialsToSupabase(materialId, { current, stock }) {
+  try {
+    const { error } = await supabase
+      .from('materials')
+      .upsert(
+        { material_id: materialId, current, stock },
+        { onConflict: 'material_id' }
+      );
+    if (error) {
+      console.error('Erro ao salvar materiais no Supabase:', error);
+      showError('Erro ao salvar materiais: ' + error.message);
+    } else {
+      console.log(`Material salvo: ${materialId}, Atual: ${current}, Estoque: ${stock}`);
+    }
+  } catch (err) {
+    console.error('Erro inesperado ao salvar materiais:', err);
+    showError('Erro inesperado ao salvar materiais: ' + err.message);
+  }
+}
+
+async function loadStateFromSupabase() {
+  try {
+    // Carregar estado de manutenção
+    const { data: maintenanceData, error: maintenanceError } = await supabase
+      .from('maintenance')
+      .select('*');
+    if (maintenanceError) {
+      console.error('Erro ao carregar manutenção do Supabase:', maintenanceError);
+      showError('Erro ao carregar manutenção: ' + maintenanceError.message);
+      return;
+    }
+    if (maintenanceData) {
+      maintenanceData.forEach(row => {
+        if (desiredPlates.includes(row.plate)) {
+          maintenanceState[row.plate] = row.is_in_maintenance;
+        }
+      });
+    }
+
+    // Carregar estado de materiais
+    const { data: materialsData, error: materialsError } = await supabase
+      .from('materials')
+      .select('*');
+    if (materialsError) {
+      console.error('Erro ao carregar materiais do Supabase:', materialsError);
+      showError('Erro ao carregar materiais: ' + materialsError.message);
+      return;
+    }
+    if (materialsData) {
+      const validMaterials = ['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'];
+      materialsData.forEach(row => {
+        if (validMaterials.includes(row.material_id)) {
+          materialsState[row.material_id] = {
+            current: row.current,
+            stock: row.stock
+          };
+        }
+      });
+    }
+
+    // Atualizar interface após carregar os dados
+    desiredPlates.forEach(plate => updateVehicleCard(plate));
+    updateMaterialsCard();
+    updateQuantityCard();
+  } catch (err) {
+    console.error('Erro inesperado ao carregar estados:', err);
+    showError('Erro inesperado ao carregar estados: ' + err.message);
+  }
+}
+
+// ==========================================================================
 // Inicialização e Eventos
 // ==========================================================================
 
 // Inicializa a aplicação ao carregar o DOM
-document.addEventListener('DOMContentLoaded', () => {
-  initializeDefaultStates();
+document.addEventListener('DOMContentLoaded', async () => {
+  await initializeDefaultStates();
   renderMaintenanceModal();
   renderMiscModal();
 
@@ -972,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     setupResponsiveElements();
-  }, 500); // Tempo reduzido para carregamento rápido
+  }, 500);
 });
 
 // Configura eventos de interação
@@ -986,37 +1016,3 @@ document.getElementById('maintenanceBtn').addEventListener('click', () => toggle
 document.getElementById('closeModalBtn').addEventListener('click', () => toggleMaintenanceModal(false));
 document.getElementById('miscBtn').addEventListener('click', () => toggleMiscModal(true));
 document.getElementById('closeMiscModalBtn').addEventListener('click', () => toggleMiscModal(false));
-document.getElementById('exportDataBtn').addEventListener('click', exportDataToFile);
-document.getElementById('importDataInput').addEventListener('change', (event) => {
-  importDataFromFile(event.target.files[0]);
-});
-
-function saveStateToLocalStorage() {
-  const data = { maintenanceState, materialsState };
-  localStorage.setItem('appState', JSON.stringify(data));
-}
-
-function loadStateFromLocalStorage() {
-  const saved = localStorage.getItem('appState');
-  if (saved) {
-    try {
-      const { maintenanceState: savedMaintenance, materialsState: savedMaterials } = JSON.parse(saved);
-      for (const plate in savedMaintenance) {
-        if (desiredPlates.includes(plate) && typeof savedMaintenance[plate] === 'boolean') {
-          maintenanceState[plate] = savedMaintenance[plate];
-        }
-      }
-      const validMaterials = ['Agua_Mineral', 'Gas_Cozinha', 'Oleo_Maquina'];
-      for (const material in savedMaterials) {
-        if (validMaterials.includes(material)) {
-          const { current, stock } = savedMaterials[material];
-          if (Number.isInteger(current) && Number.isInteger(stock) && current >= 0 && stock >= 0) {
-            materialsState[material] = { current, stock };
-          }
-        }
-      }
-    } catch (err) {
-      console.error('Erro ao carregar dados do localStorage:', err);
-    }
-  }
-}
