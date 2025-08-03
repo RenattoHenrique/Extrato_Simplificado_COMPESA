@@ -420,7 +420,7 @@ input:checked + .slider:before {
   background-color: #F1F1F1;
   border-radius: 0.5rem;
   width: 100%;
-  max-width: 64rem;
+  max-width: 40rem;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
@@ -728,4 +728,5 @@ input:checked + .slider:before {
     border-color: transparent transparent #E5E7EB transparent;
   }
 }
+
 
