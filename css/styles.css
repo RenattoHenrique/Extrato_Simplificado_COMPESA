@@ -172,6 +172,7 @@ h1.loaded {
 /* Indicador de manutenção */
 .modern-card.maintenance {
   border: 2px solid #EF4444;
+  background: #f7e2e2;
 }
 
 .maintenance-badge {
@@ -727,3 +728,4 @@ input:checked + .slider:before {
     border-color: transparent transparent #E5E7EB transparent;
   }
 }
+
