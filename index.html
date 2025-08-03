@@ -8,8 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <link rel="stylesheet" href="./css/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-white flex flex-col items-center min-h-screen p-8 gap-6">
   
@@ -27,15 +27,6 @@
     <button id="downloadBtn" class="custom-btn" aria-label="Baixar extrato como imagem">Baixar</button>
     <button id="maintenanceBtn" class="custom-btn" aria-label="Gerenciar manutenção dos veículos">Manutenção</button>
     <button id="miscBtn" class="custom-btn" aria-label="Gerenciar materiais diversos">Diversos</button>
-    <label for="importDataInput" class="custom-btn upload-icon" aria-label="Importar arquivo BancoDado.txt para atualizar estados">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="17 8 12 3 7 8"></polyline>
-        <line x1="12" y1="3" x2="12" y2="15"></line>
-      </svg>
-      <input type="file" id="importDataInput" accept=".txt" style="display: none;">
-    </label>
-    <button id="exportDataBtn" class="custom-btn" aria-label="Exportar estados para BancoDado.txt">Exportar Banco.txt</button>
   </div>
 
   <!-- Modal de Manutenção -->
@@ -78,7 +69,7 @@
     </button>
   </footer>
 
-  <script src="./js/script.js"></script>
+  <script type="module" src="./js/script.js"></script>
   <script>
     // Event listener to open the user manual PDF
     document.getElementById('manualBtn').addEventListener('click', () => {
@@ -86,5 +77,4 @@
     });
   </script>
 </body>
-
 </html>
