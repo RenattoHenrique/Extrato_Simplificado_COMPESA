@@ -468,7 +468,7 @@ input:checked + .slider:before {
   background-color: #F1F1F1;
   border-radius: 0.5rem;
   width: 100%;
-  max-width: 40rem;
+  max-width: 16rem;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
@@ -477,7 +477,7 @@ input:checked + .slider:before {
 .button-container.loaded {
   opacity: 1;
   transform: translateY(0);
-  max-width: 40rem;
+  max-width: 16rem;
 }
 
 /* Estilo dos botões personalizados */
@@ -569,11 +569,11 @@ input:checked + .slider:before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
-  max-width: 90vw;
   width: 100%;
+  max-width: 28rem;
+  padding: 1.5rem;
   background: #FFFFFF;
   border-radius: 8px;
-  padding: 1rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
