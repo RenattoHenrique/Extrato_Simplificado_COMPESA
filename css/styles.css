@@ -477,7 +477,7 @@ input:checked + .slider:before {
 .button-container.loaded {
   opacity: 1;
   transform: translateY(0);
-  max-width: 16rem;
+  max-width: 40rem;
 }
 
 /* Estilo dos botões personalizados */
@@ -737,4 +737,5 @@ input:checked + .slider:before {
     max-height: 200px;
   }
 }
+
 
