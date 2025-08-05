@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frota CMA e CPR SUL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-[#204499] flex flex-col items-center min-h-screen p-8 gap-6">
+  
+  <!-- Botões e Upload -->
+  <div class="button-container flex flex-col sm:flex-row gap-3 w-full max-w-4xl justify-center items-center">
+    <label for="fileInput" class="custom-btn upload-icon" aria-label="Enviar arquivo HTML ou XLS com dados dos veículos">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="17 8 12 3 7 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+      <input type="file" id="fileInput" accept=".xls,.html" style="display: none;">
+    </label>
+    <button id="shareBtn" class="custom-btn" aria-label="Compartilhar extrato como imagem">Compartilhar</button>
+    <button id="downloadBtn" class="custom-btn" aria-label="Baixar extrato como imagem">Baixar</button>
+    <button id="maintenanceBtn" class="custom-btn" aria-label="Gerenciar manutenção dos veículos">Manutenção</button>
+    <button id="miscBtn" class="custom-btn" aria-label="Gerenciar materiais diversos">Diversos</button>
+  </div>
+
+  <!-- Modal de Manutenção -->
+  <div id="maintenanceModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciar Manutenção</h2>
+      <ul id="maintenanceList" class="space-y-2 mb-4"></ul>
+      <button id="closeModalBtn" class="custom-btn bg-gray-200 hover:bg-violet-300">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Modal de Materiais Diversos -->
+  <div id="miscModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Gerenciar Materiais Diversos</h2>
+      <ul id="miscList" class="space-y-4 mb-4"></ul>
+      <button id="closeMiscModalBtn" class="custom-btn bg-gray-200 hover:bg-violet-300">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Conteúdo capturável -->
+  <div id="mainContent" class="w-full max-w-5xl bg-gray-50 rounded-2xl p-10 shadow-md relative" aria-label="Arraste e solte um arquivo HTML ou XLS aqui para carregar os dados dos veículos">
+    <div id="dropZone" class="hidden absolute inset-0 bg-gray-200 bg-opacity-50 flex items-center justify-center rounded-2xl">
+      <p class="text-2xl font-semibold text-gray-800" aria-live="polite">Solte aqui</p>
+    </div>
+    <img src="./img/diversos_img/logo_compesa.png" alt="Logo Compesa" class="logo-compesa mx-auto mb-6 max-w-xs w-full">
+    <h1 class="title-main text-4xl font-semibold text-gray-800 text-center mb-20">Saldo dos Veículos CMA e CPR SUL</h1>
+    <div id="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="summaryContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6"></div>
+  </div>
+
+  <!-- Footer with Manual Icon and Tooltip -->
+  <footer class="fixed bottom-4 right-4">
+    <button id="manualBtn" class="custom-btn upload-icon group relative" aria-label="Abrir manual do usuário em PDF">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-[#059669] group-focus:stroke-[#059669]">
+        <path d="M4 4h16v16H4z"></path>
+        <path d="M8 4v16"></path>
+        <path d="M12 10h4"></path>
+        <path d="M12 14h4"></path>
+        <path d="M12 18h4"></path>
+      </svg>
+      <span class="tooltip hidden group-hover:block group-focus:block absolute right-12 top-1/2 transform -translate-y-1/2 bg-gray-200 text-gray-800 text-sm font-poppins rounded px-2 py-1 whitespace-nowrap">Acesse o Manual do Usuário</span>
+    </button>
+  </footer>
+
+  <script type="module" src="./js/script.js"></script>
+  <script>
+    // Event listener to open the user manual PDF
+    document.getElementById('manualBtn').addEventListener('click', () => {
+      window.open('./guias/Manual_Usuário.pdf', '_blank');
+    });
+  </script>
+</body>
+</html>
