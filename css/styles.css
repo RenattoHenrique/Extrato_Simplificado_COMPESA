@@ -41,6 +41,7 @@ body.loaded {
 
 /* Fundo e animação do contêiner principal */
 #mainContent {
+  flex: 1; /* Faz o mainContent ocupar o espaço restante */
   background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
   padding: 1.5rem;
   opacity: 0;
@@ -465,10 +466,9 @@ input:checked + .slider:before {
   justify-content: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  background-color: #F1F1F1;
   border-radius: 0.5rem;
   width: 100%;
-  max-width: 40rem;
+  max-width: 16rem;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
@@ -477,7 +477,7 @@ input:checked + .slider:before {
 .button-container.loaded {
   opacity: 1;
   transform: translateY(0);
-  max-width: 40rem;
+  max-width: 16rem;
 }
 
 /* Estilo dos botões personalizados */
@@ -485,9 +485,7 @@ input:checked + .slider:before {
   padding: 0.5rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
-  background-color: #FFFFFF;
-  border: 1px solid #D1D5DB;
+  border: 2px solid #D1D5DB;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -515,8 +513,8 @@ input:checked + .slider:before {
 }
 
 .custom-btn.bg-gray-200:hover {
-  background-color: #C4B5FD;
-  border-color: #8B5CF6;
+  background-color: #fdb7b5;
+  border-color: #f6665c;
   opacity: 1;
 }
 
@@ -531,7 +529,7 @@ input:checked + .slider:before {
 .upload-icon svg {
   width: 1.5rem;
   height: 1.5rem;
-  stroke: #374151;
+  stroke: #ffffff;
   transition: stroke 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -637,10 +635,43 @@ input:checked + .slider:before {
     gap: 0.75rem;
   }
 
-  /* Contêiner de botões: layout em coluna para centralização */
-  .button-container {
+  /* Contêiner de botões: layout horizontal para centralização */
+  .flex.flex-row {
     flex-direction: column;
+  }
+
+  .button-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 16rem;
+    padding: 0.75rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
+  }
+
+  .button-container.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .custom-btn.upload-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.5rem;
+  }
+
+  .custom-btn.upload-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  #mainContent {
+    flex: none;
+    width: 100%;
   }
 
   /* Título principal */
@@ -656,6 +687,37 @@ input:checked + .slider:before {
 
 /* Ajustes para telas maiores que 640px */
 @media (min-width: 640px) {
+  /* Contêiner de botões: layout vertical como barra lateral */
+  .button-container {
+    flex-direction: column;
+    width: 4rem;
+    max-width: none;
+    padding: 0.75rem;
+    position: sticky;
+    top: 2rem;
+    justify-content: flex-start;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(-10px); /* Animação lateral para a barra */
+    transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
+  }
+
+  .button-container.loaded {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .custom-btn.upload-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.5rem;
+  }
+
+  .custom-btn.upload-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
   /* Contêiner principal: maior padding em telas grandes */
   #mainContent {
     padding: 3rem;
@@ -737,5 +799,3 @@ input:checked + .slider:before {
     max-height: 200px;
   }
 }
-
-
