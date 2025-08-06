@@ -464,11 +464,12 @@ input:checked + .slider:before {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
   border-radius: 0.5rem;
   width: 100%;
-  max-width: 16rem;
+  max-width: 100%;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
@@ -477,7 +478,6 @@ input:checked + .slider:before {
 .button-container.loaded {
   opacity: 1;
   transform: translateY(0);
-  max-width: 16rem;
 }
 
 /* Estilo dos botões personalizados */
@@ -547,7 +547,7 @@ input:checked + .slider:before {
    ========================================================================== */
 
 /* Estrutura base dos modais */
-#maintenanceModal, #miscModal {
+#maintenanceModal, #miscModal, #requestMaintenanceModal, #emailReportModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -555,31 +555,109 @@ input:checked + .slider:before {
   height: 100%;
   z-index: 1000;
   display: none;
+  align-items: center;
+  justify-content: center;
 }
 
-#maintenanceModal.show, #miscModal.show {
-  display: block;
+#maintenanceModal.show, #miscModal.show, #requestMaintenanceModal.show, #emailReportModal.show {
+  display: flex;
 }
 
 /* Conteúdo dos modais */
-#maintenanceModal .modal-content, #miscModal .modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
+#maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content {
+  position: relative;
   width: 100%;
   max-width: 28rem;
+  max-height: 80vh;
   padding: 1.5rem;
   background: #FFFFFF;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   opacity: 0;
+  transform: translateY(-20px);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  overflow-y: auto;
 }
 
-#maintenanceModal.show .modal-content, #miscModal.show .modal-content {
+#emailReportModal .modal-content {
+  max-width: 36rem;
+  max-height: 90vh;
+}
+
+#maintenanceModal.show .modal-content, #miscModal.show .modal-content, #requestMaintenanceModal.show .modal-content, #emailReportModal.show .modal-content {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translateY(0);
+}
+
+/* Estilo dos inputs e selects no modal de solicitação de manutenção */
+#requestMaintenanceModal select,
+#requestMaintenanceModal input,
+#requestMaintenanceModal textarea,
+#requestMaintenanceModal input[readonly] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#requestMaintenanceModal select:focus,
+#requestMaintenanceModal input:focus,
+#requestMaintenanceModal textarea:focus,
+#requestMaintenanceModal input[readonly]:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+#requestMaintenanceModal input[readonly] {
+  background-color: #F9FAFB;
+  cursor: not-allowed;
+}
+
+#requestMaintenanceModal textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Estilo dos botões no modal de solicitação de manutenção */
+#requestMaintenanceModal .custom-btn {
+  margin-top: 1rem;
+}
+
+/* Estilo do conteúdo do modal de relatório de e-mail */
+#emailReportModal .modal-content p {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: #444444;
+}
+
+#emailReportModal .modal-content strong {
+  font-weight: 600;
+  color: #000066;
+}
+
+#emailReportModal .modal-content a {
+  color: #059669;
+  text-decoration: underline;
+  transition: color 0.3s ease-in-out;
+}
+
+#emailReportModal .modal-content a:hover {
+  color: #10B981;
+}
+
+#emailReportModal .modal-content hr {
+  border: 0;
+  border-top: 1px solid #E5E7EB;
+  margin: 1rem 0;
+}
+
+/* Estilo dos botões no modal de relatório de e-mail */
+#emailReportModal .custom-btn {
+  margin-top: 1rem;
 }
 
 /* Backdrop dos modais */
@@ -646,7 +724,7 @@ input:checked + .slider:before {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 16rem;
+    max-width: 40rem;
     padding: 0.75rem;
     opacity: 0;
     transform: translateY(10px);
@@ -656,6 +734,7 @@ input:checked + .slider:before {
   .button-container.loaded {
     opacity: 1;
     transform: translateY(0);
+    max-width: 40rem;
   }
 
   .custom-btn.upload-icon {
@@ -683,22 +762,27 @@ input:checked + .slider:before {
   #dropZone p {
     font-size: 1.25rem;
   }
+
+  /* Modal: menor padding em telas pequenas */
+  #maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content {
+    padding: 1rem;
+    max-width: 90%;
+  }
 }
 
 /* Ajustes para telas maiores que 640px */
 @media (min-width: 640px) {
-  /* Contêiner de botões: layout vertical como barra lateral */
-  .button-container {
-    flex-direction: column;
-    width: 4rem;
-    max-width: none;
-    padding: 0.75rem;
-    position: sticky;
-    top: 2rem;
-    justify-content: flex-start;
+ .button-container {
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    position: static;
     opacity: 0;
-    transform: translateX(-10px); /* Animação lateral para a barra */
+    transform: translateY(10px);
     transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
   }
 
