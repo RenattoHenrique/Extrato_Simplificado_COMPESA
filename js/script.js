@@ -13,6 +13,47 @@ const desiredPlates = [
 
 const placasCPRSUL = ['SJG1G06', 'SJE0D78', 'MAQ0003', 'RZO2H73'];
 
+// Dados para o novo modal
+const vehicles = [
+  { plate: 'SJG1G06', locadora: 'CSfrotas' },
+  { plate: 'SJE0D78', locadora: 'CSfrotas' },
+  { plate: 'QYY0G07', locadora: 'Locadora de Veículos Caxangá' },
+  { plate: 'RZO2H73', locadora: 'Locavel' },
+  { plate: 'RZO3G50', locadora: 'Locavel' },
+  { plate: 'SOD6G88', locadora: 'PBF' },
+  { plate: 'KII8770', locadora: 'COMPESA' },
+  { plate: 'PCA5320', locadora: 'COMPESA' },
+  { plate: 'PEW3772', locadora: 'COMPESA' },
+  { plate: 'PCA7534', locadora: 'COMPESA' }
+];
+
+const drivers = [
+  { name: 'Flávio Rosendo', contact: '(81) 99707-2067' },
+  { name: 'Flávio Simões', contact: '(81) 98820-2260' },
+  { name: 'João Alves', contact: '(81) 98870-1779' },
+  { name: 'Swami', contact: '(81) 99488-5344' },
+  { name: 'Jonas', contact: '(81) 98365-0294' },
+  { name: 'Abraão', contact: '(81) 98336-1267' }
+];
+
+const units = [
+  {
+    name: 'ETA PIRAPAMA',
+    address: 'ETA PIRAPAMA - BR Sul KM 100, SN - Pirapama, Cabo de Santo Agostinho - PE',
+    maps: 'https://maps.app.goo.gl/yuG8uUnHr28QanT87'
+  },
+  {
+    name: 'ETA SUAPE',
+    address: 'ETA SUAPE - Complexo Portuário s/n - Engenho Massangana - Ipojuca-PE',
+    maps: 'https://maps.app.goo.gl/qBFx6KXpLFefRUYx5'
+  },
+  {
+    name: 'ETA GURJAU',
+    address: 'ETA GURJAU - Rua do Vento, S/N - Gurjaú - Cabo de Santo Agostinho-PE',
+    maps: 'https://maps.app.goo.gl/djcVeUS8tscNxpXo9'
+  }
+];
+
 let maintenanceState = {};
 let materialsState = {
   'Agua_Mineral': { current: 0, stock: 0 },
@@ -32,6 +73,31 @@ const fuelPrices = {
 
 // Contador para evitar flickering no drag-and-drop
 let dragCounter = 0;
+
+// Função para gerenciar o backdrop
+function manageBackdrop(show) {
+  let backdrop = document.querySelector('.modal-backdrop');
+  if (show && !backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+    document.body.appendChild(backdrop);
+    backdrop.addEventListener('click', () => {
+      // Fechar todos os modais ao clicar no backdrop
+      toggleMaintenanceModal(false);
+      toggleMiscModal(false);
+      toggleRequestMaintenanceModal(false);
+      toggleEmailReportModal(false);
+    });
+  } else if (!show && backdrop) {
+    backdrop.remove();
+  }
+}
+
+function htmlToPlainText(html) {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent.replace(/\n\s*\n/g, '\n').trim();
+}
 
 // Funções de Inicialização
 async function initializeDefaultStates() {
@@ -88,6 +154,7 @@ function processFile(file) {
       renderSummary(table);
       renderMaintenanceModal();
       renderMiscModal();
+      renderRequestMaintenanceModal();
     } catch (err) {
       console.error('Erro ao processar o arquivo:', err);
       showError('Erro ao processar o arquivo: ' + err.message);
@@ -527,6 +594,113 @@ async function renderMiscModal() {
   });
 }
 
+function renderRequestMaintenanceModal() {
+  const vehicleSelect = document.getElementById('vehicleSelect');
+  const driverSelect = document.getElementById('driverSelect');
+  const unitSelect = document.getElementById('unitSelect');
+  const driverContact = document.getElementById('driverContact');
+  const unitAddress = document.getElementById('unitAddress');
+  const unitMaps = document.getElementById('unitMaps');
+  const locadoraSelect = document.getElementById('locadoraSelect');
+
+  // Preencher lista de veículos
+  vehicleSelect.innerHTML = '<option value="">Selecione um veículo</option>';
+  vehicles.forEach(vehicle => {
+    const option = document.createElement('option');
+    option.value = vehicle.plate;
+    option.textContent = vehicle.plate;
+    vehicleSelect.appendChild(option);
+  });
+
+  // Preencher lista de condutores
+  driverSelect.innerHTML = '<option value="">Selecione um condutor</option>';
+  drivers.forEach(driver => {
+    const option = document.createElement('option');
+    option.value = driver.name;
+    option.textContent = driver.name;
+    driverSelect.appendChild(option);
+  });
+
+  // Preencher lista de unidades
+  unitSelect.innerHTML = '<option value="">Selecione uma unidade</option>';
+  units.forEach(unit => {
+    const option = document.createElement('option');
+    option.value = unit.name;
+    option.textContent = unit.name;
+    unitSelect.appendChild(option);
+  });
+
+  // Atualizar contato do condutor ao selecionar
+  driverSelect.addEventListener('change', () => {
+    const selectedDriver = drivers.find(driver => driver.name === driverSelect.value);
+    driverContact.value = selectedDriver ? selectedDriver.contact : '';
+  });
+
+  // Atualizar endereço e link do Maps ao selecionar unidade
+  unitSelect.addEventListener('change', () => {
+    const selectedUnit = units.find(unit => unit.name === unitSelect.value);
+    unitAddress.value = selectedUnit ? selectedUnit.address : '';
+    unitMaps.value = selectedUnit ? selectedUnit.maps : '';
+  });
+
+  // Atualizar locadora ao selecionar veículo
+  vehicleSelect.addEventListener('change', () => {
+    const selectedVehicle = vehicles.find(vehicle => vehicle.plate === vehicleSelect.value);
+    locadoraSelect.value = selectedVehicle ? selectedVehicle.locadora : '';
+  });
+}
+
+// Função para renderizar o modal de relatório de e-mail
+function renderEmailReportModal(data) {
+  const emailReportModal = document.getElementById('emailReportModal');
+  const emailReportContent = document.getElementById('emailReportContent');
+  if (!emailReportModal || !emailReportContent) {
+    console.error('Elementos do modal de relatório de e-mail não encontrados.');
+    return;
+  }
+
+  const emailBody = `
+    <p><strong>Destinatário:</strong> gadlocados@compesa.com.br</p>
+    <p><strong>Cc:</strong> swamirecife@compesa.com.br, luannesilva@compesa.com.br</p>
+    <p><strong>Assunto:</strong> Manutenção do Veículo ${data.vehicleSelect} Km ${data.currentKm} - CMA SUL/GPM</p>
+    <hr class="my-4">
+    <p>${getGreeting()}</p>
+    <p>Gostaria de informar que o veículo de placa <strong>${data.vehicleSelect}</strong>, com <strong>${data.currentKm}</strong> km rodados, necessita de alguns ajustes importantes. Abaixo, listo os problemas identificados:</p>
+    <br>
+    <p>${data.issues.replace(/\n/g, '<br>')}</p>
+    <br>
+    <p><strong>Gerência:</strong> GERÊNCIA DE PRODUÇÃO METROPOLITANA - GPM</p>
+    <p><strong>Coordenação:</strong> COORDENAÇÃO DE MANUTENÇÃO DE ADUTORA - CMA SUL</p>
+    <p><strong>Cidade onde o veículo se encontra:</strong> Cabo de Santo Agostinho</p>
+    <p><strong>Telefone da unidade:</strong> 3412-9797</p>
+    <p><strong>Contato do condutor do veículo:</strong> ${data.driverContact} - ${data.driverSelect}</p>
+    <p><strong>Unidade de lotação do veículo:</strong> ${data.unitSelect}</p>
+    <p><strong>Endereço da unidade:</strong> ${data.unitAddress}</p>
+    <p><strong>Google Maps:</strong> <a href="${data.unitMaps}" target="_blank">${data.unitMaps}</a></p>
+    <p><strong>Locadora/Responsável:</strong> ${data.locadoraSelect}</p>
+  `;
+
+  emailReportContent.innerHTML = emailBody;
+  toggleEmailReportModal(true);
+}
+
+// Função para controlar o modal de relatório de e-mail
+function toggleEmailReportModal(show) {
+  const modal = document.getElementById('emailReportModal');
+  if (modal) {
+    manageBackdrop(show);
+    modal.classList.toggle('hidden', !show);
+    modal.classList.toggle('show', show);
+  }
+}
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Bom dia!";
+  if (hour < 18) return "Boa tarde!";
+  return "Boa noite!";
+}
+
 // Funções de Atualização de Interface
 function updateVehicleCard(plate) {
   const card = document.querySelector(`.modern-card[data-plate="${plate}"]`);
@@ -767,47 +941,37 @@ async function shareImage() {
 // Funções de Controle de Modais
 function toggleMaintenanceModal(show) {
   const modal = document.getElementById('maintenanceModal');
-  let backdrop = document.querySelector('.modal-backdrop');
   if (modal) {
-    const modalContent = modal.querySelector('div');
-    if (modalContent) {
-      modalContent.classList.add('modal-content');
-    }
-    if (show && !backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'modal-backdrop';
-      document.body.appendChild(backdrop);
-    }
+    manageBackdrop(show);
     modal.classList.toggle('hidden', !show);
     modal.classList.toggle('show', show);
-    if (backdrop) {
-      backdrop.classList.toggle('show', show);
-      if (!show) {
-        backdrop.remove();
-      }
-    }
   }
 }
 
 function toggleMiscModal(show) {
   const modal = document.getElementById('miscModal');
-  let backdrop = document.querySelector('.modal-backdrop');
   if (modal) {
-    const modalContent = modal.querySelector('div');
-    if (modalContent) {
-      modalContent.classList.add('modal-content');
-    }
-    if (show && !backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'modal-backdrop';
-      document.body.appendChild(backdrop);
-    }
+    manageBackdrop(show);
     modal.classList.toggle('hidden', !show);
     modal.classList.toggle('show', show);
-    if (backdrop) {
-      backdrop.classList.toggle('show', show);
-      if (!show) {
-        backdrop.remove();
+  }
+}
+
+function toggleRequestMaintenanceModal(show) {
+  const modal = document.getElementById('requestMaintenanceModal');
+  if (modal) {
+    manageBackdrop(show);
+    modal.classList.toggle('hidden', !show);
+    modal.classList.toggle('show', show);
+    if (!show) {
+      // Limpar formulário ao fechar
+      const form = document.getElementById('requestMaintenanceForm');
+      if (form) {
+        form.reset();
+        document.getElementById('driverContact').value = '';
+        document.getElementById('unitAddress').value = '';
+        document.getElementById('unitMaps').value = '';
+        document.getElementById('locadoraSelect').value = '';
       }
     }
   }
@@ -902,6 +1066,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('closeMiscModalBtn').addEventListener('click', () => toggleMiscModal(false));
   document.getElementById('downloadBtn').addEventListener('click', downloadImage);
   document.getElementById('shareBtn').addEventListener('click', shareImage);
+  document.getElementById('requestMaintenanceBtn').addEventListener('click', () => toggleRequestMaintenanceModal(true));
+  document.getElementById('closeRequestModalBtn').addEventListener('click', () => toggleRequestMaintenanceModal(false));
+  document.getElementById('buildEmailBtn').addEventListener('click', () => {
+    const form = document.getElementById('requestMaintenanceForm');
+    const vehicleSelect = document.getElementById('vehicleSelect').value;
+    const currentKm = document.getElementById('currentKm').value;
+    const issues = document.getElementById('issues').value;
+    const driverSelect = document.getElementById('driverSelect').value;
+    const driverContact = document.getElementById('driverContact').value;
+    const unitSelect = document.getElementById('unitSelect').value;
+    const unitAddress = document.getElementById('unitAddress').value;
+    const unitMaps = document.getElementById('unitMaps').value;
+    const locadoraSelect = document.getElementById('locadoraSelect').value;
+
+    // Validação dos campos obrigatórios
+    if (!vehicleSelect || !currentKm || !issues || !driverSelect || !driverContact || !unitSelect || !unitAddress || !unitMaps || !locadoraSelect) {
+      showError('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const emailData = {
+      vehicleSelect,
+      currentKm,
+      issues,
+      driverSelect,
+      driverContact,
+      unitSelect,
+      unitAddress,
+      unitMaps,
+      locadoraSelect
+    };
+
+    renderEmailReportModal(emailData);
+    toggleRequestMaintenanceModal(false); // Fechar o modal de solicitação após exibir o relatório
+  });
+
+  document.getElementById('closeEmailReportModalBtn').addEventListener('click', () => toggleEmailReportModal(false));
 
   document.body.classList.add('loaded');
   document.querySelector('.button-container').classList.add('loaded');
