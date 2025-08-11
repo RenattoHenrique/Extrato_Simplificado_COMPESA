@@ -1,3 +1,4 @@
+// Configuração do Supabase
 const supabase = window.supabase.createClient(
   'https://wnuialureqofvgefdfol.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
@@ -63,11 +64,11 @@ let materialsState = {
 let currentTable = null;
 
 const fuelPrices = {
-  gasolina: 6.15,
-  diesel: 5.79,
-  gnv: 4.72,
-  etanol: 4.97,
-  arla32: 5.75
+  gasolina: 6.25,
+  diesel: 6.20,
+  gnv: 4.77,
+  etanol: 4.27,
+  arla32: 4.00
 };
 
 // Contador para evitar flickering no drag-and-drop
@@ -231,37 +232,8 @@ function formatCurrency(value) {
 
 // Funções de Busca de Dados
 async function fetchFuelPrices() {
-  try {
-    const query = `
-      SELECT
-        produto,
-        AVG(preco_venda) as preco_medio
-      FROM
-        basedosdados.br_anp_precos_combustiveis.microdados
-      WHERE
-        ano = 2025
-        AND produto IN ('Gasolina C', 'Diesel', 'GNV', 'Etanol Hidratado')
-        AND regiao = 'BRASIL'
-      GROUP BY
-        produto
-    `;
-    const data = await basedosdados.query(query, { billingProjectId: 'your-google-project-id' });
-
-    const updatedPrices = { ...fuelPrices };
-    data.forEach(row => {
-      const produto = row.produto.toLowerCase();
-      const preco = parseFloat(row.preco_medio) || 0;
-      if (produto.includes('gasolina c')) updatedPrices.gasolina = preco;
-      if (produto.includes('diesel')) updatedPrices.diesel = preco;
-      if (produto.includes('gnv')) updatedPrices.gnv = preco;
-      if (produto.includes('etanol hidratado')) updatedPrices.etanol = preco;
-    });
-
-    return updatedPrices;
-  } catch (err) {
-    console.error('Erro ao buscar preços da Base dos Dados:', err);
-    return fuelPrices;
-  }
+  console.warn('Preços dinâmicos de combustíveis não disponíveis; usando valores estáticos.');
+  return fuelPrices;
 }
 
 // Funções de Renderização de Cartões
@@ -376,7 +348,7 @@ async function renderFuelPricesCard() {
           <img src="./img/combust_img/Gás_Natural.png" class="w-10 h-10 object-contain loaded" alt="Ícone de GNV" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/combust_img/Gás_Natural.png');"/>
           <span>Gás (GNV)</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(0)}</span>
+        <span class="font-semibold text-gray-800 text-lg">R$ ${formatCurrency(prices.gnv)}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
@@ -985,14 +957,15 @@ function setupResponsiveElements() {
 async function saveMaintenanceToSupabase(plate, isInMaintenance) {
   try {
     const { error } = await supabase
-      .from('maintenance')
+      .from('maintenance_state')
       .upsert(
         { plate, is_in_maintenance: isInMaintenance },
         { onConflict: 'plate' }
       );
     if (error) {
       console.error('Erro ao salvar estado de manutenção no Supabase:', error);
-      showError('Erro ao salvar estado de manutenção: ' + error.message);
+      const errorMsg = error.message || error.details || error.hint || 'Erro desconhecido';
+      showError('Erro ao salvar estado de manutenção: ' + errorMsg);
     } else {
       console.log(`Estado de manutenção salvo para placa ${plate}: ${isInMaintenance}`);
     }
@@ -1005,14 +978,15 @@ async function saveMaintenanceToSupabase(plate, isInMaintenance) {
 async function saveMaterialsToSupabase(material, data) {
   try {
     const { error } = await supabase
-      .from('materials')
+      .from('materials_state')
       .upsert(
-        { material_id: material, current: data.current, stock: data.stock },
+        { material_id: material, current_quantity: data.current, stock_quantity: data.stock },
         { onConflict: 'material_id' }
       );
     if (error) {
       console.error('Erro ao salvar materiais no Supabase:', error);
-      showError('Erro ao salvar materiais: ' + error.message);
+      const errorMsg = error.message || error.details || error.hint || 'Erro desconhecido';
+      showError('Erro ao salvar materiais: ' + errorMsg);
     } else {
       console.log(`Materiais salvos: ${material} - Atual: ${data.current}, Estoque: ${data.stock}`);
     }
@@ -1025,7 +999,7 @@ async function saveMaterialsToSupabase(material, data) {
 async function loadStateFromSupabase() {
   try {
     const { data: maintenanceData, error: maintenanceError } = await supabase
-      .from('maintenance')
+      .from('maintenance_state')
       .select('plate, is_in_maintenance');
     if (maintenanceError) {
       console.error('Erro ao carregar estado de manutenção do Supabase:', maintenanceError);
@@ -1036,15 +1010,15 @@ async function loadStateFromSupabase() {
     }
 
     const { data: materialsData, error: materialsError } = await supabase
-      .from('materials')
-      .select('material_id, current, stock');
+      .from('materials_state')
+      .select('material_id, current_quantity, stock_quantity');
     if (materialsError) {
       console.error('Erro ao carregar materiais do Supabase:', materialsError);
     } else if (materialsData) {
       materialsData.forEach(row => {
         materialsState[row.material_id] = {
-          current: row.current,
-          stock: row.stock
+          current: row.current_quantity,
+          stock: row.stock_quantity
         };
       });
     }
@@ -1107,4 +1081,3 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.button-container').classList.add('loaded');
   document.getElementById('mainContent').classList.add('loaded');
 });
-
