@@ -1,7 +1,6 @@
-// Configuração do Supabase
 const supabase = window.supabase.createClient(
-  'https://mqyhqkyrttqkldslifed.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xeWhxa3lydHRxa2xkc2xpZmVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxODA0NDYsImV4cCI6MjA2OTc1NjQ0Nn0.PbbfeZAknDu7DvggU_tgCkgoJ9oEJzIH-Sq40PeYOzQ'
+  'https://wnuialureqofvgefdfol.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudWlhbHVyZXFvZnZnZWZkZm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTQ2MzQsImV4cCI6MjA2OTczMDYzNH0.d_LEjNTIAuSagsaaJCsBWI9SaelBt4n8qzfxAPlRKgU'
 );
 
 // Dados Iniciais
@@ -1108,3 +1107,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.button-container').classList.add('loaded');
   document.getElementById('mainContent').classList.add('loaded');
 });
+
