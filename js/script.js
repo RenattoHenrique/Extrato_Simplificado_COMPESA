@@ -93,6 +93,29 @@ function manageBackdrop(show) {
   }
 }
 
+// Função para exibir notificação temporária
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 opacity-0 transition-opacity duration-300';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  // Mostrar notificação
+  setTimeout(() => {
+    notification.classList.remove('opacity-0');
+    notification.classList.add('opacity-100');
+  }, 10);
+
+  // Remover notificação após 2 segundos
+  setTimeout(() => {
+    notification.classList.remove('opacity-100');
+    notification.classList.add('opacity-0');
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 2000);
+}
+
 function htmlToPlainText(html) {
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
@@ -270,7 +293,7 @@ function renderVehicleCards(table) {
     console.log(`Renderizando placa: ${plate}, Saldo: R$ ${balanceDisplay}, Manutenção: ${isInMaintenance}`);
 
     const card = document.createElement('div');
-    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded`;
+    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded cursor-pointer`;
     card.setAttribute('data-plate', plate);
     card.setAttribute('data-balance', balanceRaw);
     card.setAttribute('aria-label', `Veículo ${plate} com saldo de R$ ${balanceDisplay}${isInMaintenance ? ', em manutenção' : ''}`);
@@ -282,6 +305,16 @@ function renderVehicleCards(table) {
       <p class="text-3xl font-bold ${balanceValue === 0 ? 'zero-balance' : 'text-green-600'} loaded" data-balance-display="R$ ${balanceDisplay}">R$ ${balanceDisplay}</p>
       ${isInMaintenance ? '<div class="maintenance-badge loaded">Em Manutenção</div>' : ''}
     `;
+    // Adicionar evento de clique para copiar a placa
+    card.addEventListener('click', async () => {
+      const plateText = card.getAttribute('data-plate');
+      const success = await copyToClipboard(plateText);
+      if (success) {
+        showNotification(`Placa ${plateText} copiada!`);
+      } else {
+        showError('Erro ao copiar a placa. Tente novamente.');
+      }
+    });
     contentDiv.appendChild(card);
   });
 }
@@ -677,7 +710,7 @@ function updateVehicleCard(plate) {
   const card = document.querySelector(`.modern-card[data-plate="${plate}"]`);
   if (card) {
     const isInMaintenance = maintenanceState[plate];
-    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded`;
+    card.className = `modern-card ${isInMaintenance ? 'maintenance' : ''} loaded cursor-pointer`;
     const balanceRaw = card.getAttribute('data-balance') || '0,00';
     const balanceValue = parseSaldo(balanceRaw);
     const balanceDisplay = formatCurrency(balanceValue);
@@ -826,11 +859,14 @@ async function copyToClipboard(text) {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(text);
+      return true;
     } else {
       console.warn('API navigator.clipboard não suportada.');
+      return false;
     }
   } catch (err) {
     console.error('Erro ao copiar para a área de transferência:', err);
+    return false;
   }
 }
 
@@ -1076,6 +1112,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   document.getElementById('closeEmailReportModalBtn').addEventListener('click', () => toggleEmailReportModal(false));
+
+  // Adicionando funcionalidade ao botão de copiar e-mail
+  document.getElementById('copyEmailBtn').addEventListener('click', async () => {
+    const emailReportContent = document.getElementById('emailReportContent');
+    if (emailReportContent) {
+      const emailText = htmlToPlainText(emailReportContent.innerHTML);
+      const success = await copyToClipboard(emailText);
+      if (success) {
+        showNotification('E-mail copiado com sucesso!');
+        setTimeout(() => {
+          toggleEmailReportModal(false);
+        }, 2000);
+      } else {
+        showError('Erro ao copiar o e-mail. Tente novamente.');
+      }
+    } else {
+      showError('Erro: Conteúdo do e-mail não encontrado.');
+    }
+  });
 
   document.body.classList.add('loaded');
   document.querySelector('.button-container').classList.add('loaded');
