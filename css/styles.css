@@ -713,11 +713,6 @@ input:checked + .slider:before {
     gap: 0.75rem;
   }
 
-  /* Contêiner de botões: layout horizontal para centralização */
-  .flex.flex-row {
-    flex-direction: column;
-  }
-
   .button-container {
     flex-direction: row;
     flex-wrap: wrap;
@@ -738,8 +733,8 @@ input:checked + .slider:before {
   }
 
   .custom-btn.upload-icon {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 5.25rem;
+    height: 5.25rem;
     padding: 0.5rem;
   }
 
@@ -802,17 +797,15 @@ input:checked + .slider:before {
     height: 1.5rem;
   }
 
-  /* Contêiner principal: maior padding em telas grandes */
   #mainContent {
     padding: 3rem;
   }
 
-  /* Título principal: maior tamanho de fonte */
   h1.title-main {
     font-size: 2.25rem;
   }
 
-  /* Cartão principal: maior arredondamento, padding e largura máxima */
+
   .modern-card {
     border-radius: 12px;
     padding: 16px;
@@ -820,23 +813,19 @@ input:checked + .slider:before {
     max-width: 20rem;
   }
 
-  /* Imagens nos cartões: maior altura */
   .modern-card img {
     height: 10rem;
   }
 
-  /* Textos nos cartões: maior tamanho de fonte */
   .modern-card p {
     font-size: 1.25rem;
   }
 
-  /* Textos grandes nos cartões: maior tamanho e margem */
   .modern-card .text-3xl {
     font-size: 1.875rem;
     margin-bottom: 12px;
   }
 
-  /* Badge de manutenção: maior tamanho e padding */
   .maintenance-badge {
     font-size: 0.99rem;
     padding: 4px 12px;
@@ -844,7 +833,6 @@ input:checked + .slider:before {
     height: 24px;
   }
 
-  /* Switch: maior tamanho */
   .switch {
     width: 40px;
     height: 20px;
@@ -859,13 +847,11 @@ input:checked + .slider:before {
     transform: translateX(20px);
   }
 
-  /* Inputs numéricos: maior largura e padding */
   #miscList input[type="number"] {
     width: 4rem;
     padding: 4px 8px;
   }
 
-  /* Textos nos cartões de resumo: tamanhos ajustados */
   #summaryContainer .modern-card .text-lg {
     font-size: 1rem;
   }
@@ -878,7 +864,7 @@ input:checked + .slider:before {
     font-size: 1.5rem;
   }
 
-  /* Gráficos: maior altura do canvas */
+
   .chart-card canvas {
     max-height: 200px;
   }
