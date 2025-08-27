@@ -482,7 +482,7 @@ input:checked + .slider:before {
 
 /* Estilo dos botões personalizados */
 .custom-btn {
-  padding: 0.5rem 1.25rem;
+  padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   border: 2px solid #D1D5DB;
@@ -490,12 +490,10 @@ input:checked + .slider:before {
   cursor: pointer;
   transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
   text-align: center;
-  min-width: 8rem;
-  max-width: 12rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2.25rem;
+  height: 2.5rem;
   opacity: 0.8;
 }
 
@@ -518,18 +516,19 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-/* Ícones de upload */
+/* Estilo para botões com ícone e texto */
 .upload-icon {
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   min-width: auto;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: auto;
+  height: 2.5rem;
 }
 
 .upload-icon svg {
   width: 1.5rem;
   height: 1.5rem;
-  stroke: #ffffff;
+  stroke: #FFFFFF;
+  
   transition: stroke 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
@@ -538,8 +537,73 @@ input:checked + .slider:before {
   transform: scale(1.1);
 }
 
+.upload-icon .btn-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+.upload-icon:hover .btn-text, .upload-icon:focus .btn-text {
+  color: #059669;
+}
+
 .upload-icon input[type="file"] {
   display: none;
+}
+
+/* Estilo para botões de ação no histórico */
+.action-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.action-btn.edit {
+  background-color: #E5E7EB;
+  color: #374151;
+  border: 1px solid #D1D5DB;
+}
+
+.action-btn.edit:hover, .action-btn.edit:focus {
+  background-color: #059669;
+  color: #FFFFFF;
+  border-color: #059669;
+}
+
+.action-btn.delete {
+  background-color: #f7e2e2;
+  color: #EF4444;
+  border: 1px solid #EF4444;
+}
+
+.action-btn.delete:hover, .action-btn.delete:focus {
+  background-color: #EF4444;
+  color: #FFFFFF;
+  border-color: #EF4444;
+}
+
+/* Estilo para notificação de sucesso */
+.notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background-color: #059669;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ==========================================================================
@@ -547,7 +611,7 @@ input:checked + .slider:before {
    ========================================================================== */
 
 /* Estrutura base dos modais */
-#maintenanceModal, #miscModal, #requestMaintenanceModal, #emailReportModal {
+#maintenanceModal, #miscModal, #requestMaintenanceModal, #emailReportModal, #maintenanceNotesModal, #editMaintenanceNoteModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -559,12 +623,12 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
-#maintenanceModal.show, #miscModal.show, #requestMaintenanceModal.show, #emailReportModal.show {
+#maintenanceModal.show, #miscModal.show, #requestMaintenanceModal.show, #emailReportModal.show, #maintenanceNotesModal.show, #editMaintenanceNoteModal.show {
   display: flex;
 }
 
 /* Conteúdo dos modais */
-#maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content {
+#maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content, #maintenanceNotesModal .modal-content, #editMaintenanceNoteModal .modal-content {
   position: relative;
   width: 100%;
   max-width: 28rem;
@@ -579,12 +643,105 @@ input:checked + .slider:before {
   overflow-y: auto;
 }
 
+/* Estilo específico para o modal de anotações de manutenção */
+#maintenanceNotesModal .modal-content {
+  max-width: 64rem; /* Aumentado para acomodar as duas colunas */
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+#maintenanceNotesModal .modal-content .flex-1 {
+  flex: 1;
+  min-width: 0; /* Evita que o conteúdo exceda o contêiner */
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child {
+  background: #F9FAFB; /* Fundo cinza claro para o histórico */
+  padding: 1rem;
+  border-radius: 8px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child ul {
+  list-style: none;
+  padding: 0;
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child ul li {
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #444444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child ul li:last-child {
+  border-bottom: none;
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child ul li strong {
+  font-weight: 600;
+  color: #000066;
+}
+
+#maintenanceNotesModal .modal-content .flex-1:last-child ul li .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Estilo específico para o modal de edição de anotações */
+#editMaintenanceNoteModal .modal-content {
+  max-width: 28rem;
+  padding: 1.5rem;
+}
+
+/* Estilo dos inputs e selects no modal de edição */
+#editMaintenanceNoteModal select,
+#editMaintenanceNoteModal input,
+#editMaintenanceNoteModal textarea,
+#editMaintenanceNoteModal input[readonly] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#editMaintenanceNoteModal select:focus,
+#editMaintenanceNoteModal input:focus,
+#editMaintenanceNoteModal textarea:focus,
+#editMaintenanceNoteModal input[readonly]:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+#editMaintenanceNoteModal input[readonly] {
+  background-color: #F9FAFB;
+  cursor: not-allowed;
+}
+
+#editMaintenanceNoteModal textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Estilo dos botões no modal de edição */
+#editMaintenanceNoteModal .custom-btn {
+  margin-top: 1rem;
+}
+
 #emailReportModal .modal-content {
   max-width: 36rem;
   max-height: 90vh;
 }
 
-#maintenanceModal.show .modal-content, #miscModal.show .modal-content, #requestMaintenanceModal.show .modal-content, #emailReportModal.show .modal-content {
+#maintenanceModal.show .modal-content, #miscModal.show .modal-content, #requestMaintenanceModal.show .modal-content, #emailReportModal.show .modal-content, #maintenanceNotesModal.show .modal-content, #editMaintenanceNoteModal.show .modal-content {
   opacity: 1;
   transform: translateY(0);
 }
@@ -721,26 +878,23 @@ input:checked + .slider:before {
     width: 100%;
     max-width: 40rem;
     padding: 0.75rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.5s ease-in-out 0.1s, transform 0.5s ease-in-out 0.1s;
-  }
-
-  .button-container.loaded {
-    opacity: 1;
-    transform: translateY(0);
-    max-width: 40rem;
+    gap: 0.5rem;
   }
 
   .custom-btn.upload-icon {
-    width: 5.25rem;
-    height: 5.25rem;
     padding: 0.5rem;
+    height: 3rem;
+    width: auto;
+    min-width: 8rem;
   }
 
   .custom-btn.upload-icon svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .custom-btn.upload-icon .btn-text {
+    font-size: 0.75rem;
   }
 
   #mainContent {
@@ -759,15 +913,40 @@ input:checked + .slider:before {
   }
 
   /* Modal: menor padding em telas pequenas */
-  #maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content {
+  #maintenanceModal .modal-content, #miscModal .modal-content, #requestMaintenanceModal .modal-content, #emailReportModal .modal-content, #editMaintenanceNoteModal .modal-content {
     padding: 1rem;
     max-width: 90%;
+  }
+
+  /* Ajuste para o modal de anotações de manutenção em telas pequenas */
+  #maintenanceNotesModal .modal-content {
+    flex-direction: column;
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  #maintenanceNotesModal .modal-content .flex-1:last-child {
+    max-height: 40vh; /* Reduz a altura do histórico em telas pequenas */
+  }
+
+  #maintenanceNotesModal .modal-content .flex-1:last-child ul li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #maintenanceNotesModal .modal-content .flex-1:last-child ul li .action-buttons {
+    margin-top: 0.5rem;
+  }
+
+  .action-btn {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
   }
 }
 
 /* Ajustes para telas maiores que 640px */
 @media (min-width: 640px) {
- .button-container {
+  .button-container {
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -787,14 +966,18 @@ input:checked + .slider:before {
   }
 
   .custom-btn.upload-icon {
-    width: 2.25rem;
-    height: 2.25rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    width: auto;
+    height: 2.5rem;
   }
 
   .custom-btn.upload-icon svg {
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  .custom-btn.upload-icon .btn-text {
+    font-size: 0.875rem;
   }
 
   #mainContent {
@@ -804,7 +987,6 @@ input:checked + .slider:before {
   h1.title-main {
     font-size: 2.25rem;
   }
-
 
   .modern-card {
     border-radius: 12px;
@@ -863,7 +1045,6 @@ input:checked + .slider:before {
   #summaryContainer .modern-card .text-2xl {
     font-size: 1.5rem;
   }
-
 
   .chart-card canvas {
     max-height: 200px;
