@@ -332,21 +332,21 @@ function renderMaterialsCard() {
           <img src="./img/diversos_img/Agua_Mineral.png" class="w-10 h-10 object-contain loaded" alt="Ícone de garrafa de água mineral" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Agua_Mineral.png');"/>
           <span>Água Mineral</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current}  ${materialsState['Agua_Mineral'].stock}</span>
+        <span class="font-semibold text-gray-800 text-lg">${materialsState['Agua_Mineral'].current} / ${materialsState['Agua_Mineral'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
           <img src="./img/diversos_img/Gas_Cozinha.png" class="w-10 h-10 object-contain loaded" alt="Ícone de botijão de gás" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Gas_Cozinha.png');"/>
           <span>Gás de Cozinha</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current}  ${materialsState['Gas_Cozinha'].stock}</span>
+        <span class="font-semibold text-gray-800 text-lg">${materialsState['Gas_Cozinha'].current} / ${materialsState['Gas_Cozinha'].stock}</span>
       </li>
       <li class="flex justify-between items-center loaded">
         <div class="flex items-center gap-3">
           <img src="./img/diversos_img/Oleo_Maquina.png" class="w-10 h-10 object-contain loaded" alt="Ícone de óleo de máquina" onerror="this.parentElement.innerHTML='<div class=\\'no-image loaded\\'>Imagem não disponível</div>'; console.error('Erro ao carregar imagem: ./img/diversos_img/Oleo_Maquina.png');"/>
           <span>Óleo de Máquina</span>
         </div>
-        <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current}  ${materialsState['Oleo_Maquina'].stock}</span>
+        <span class="font-semibold text-gray-800 text-lg">${materialsState['Oleo_Maquina'].current} / ${materialsState['Oleo_Maquina'].stock}</span>
       </li>
     </ul>
   `;
@@ -1136,3 +1136,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('.button-container').classList.add('loaded');
   document.getElementById('mainContent').classList.add('loaded');
 });
+
