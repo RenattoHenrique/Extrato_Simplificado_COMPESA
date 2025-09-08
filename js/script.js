@@ -13,7 +13,6 @@ const desiredPlates = [
 
 const placasCPRSUL = ['SJG1G06', 'SJE0D78', 'MAQ0003', 'RZO2H73'];
 
-// Dados para o novo modal
 const vehicles = [
   { plate: 'SJG1G06', locadora: 'CSfrotas' },
   { plate: 'SJE0D78', locadora: 'CSfrotas' },
@@ -71,10 +70,8 @@ const fuelPrices = {
   arla32: 4.00
 };
 
-// Contador para evitar flickering no drag-and-drop
 let dragCounter = 0;
 
-// Função para gerenciar o backdrop
 function manageBackdrop(show) {
   let backdrop = document.querySelector('.modal-backdrop');
   if (show && !backdrop) {
@@ -82,7 +79,6 @@ function manageBackdrop(show) {
     backdrop.className = 'modal-backdrop';
     document.body.appendChild(backdrop);
     backdrop.addEventListener('click', () => {
-      // Fechar todos os modais ao clicar no backdrop
       toggleMaintenanceModal(false);
       toggleMiscModal(false);
       toggleRequestMaintenanceModal(false);
@@ -93,20 +89,17 @@ function manageBackdrop(show) {
   }
 }
 
-// Função para exibir notificação temporária
 function showNotification(message) {
   const notification = document.createElement('div');
   notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 opacity-0 transition-opacity duration-300';
   notification.textContent = message;
   document.body.appendChild(notification);
 
-  // Mostrar notificação
   setTimeout(() => {
     notification.classList.remove('opacity-0');
     notification.classList.add('opacity-100');
   }, 10);
 
-  // Remover notificação após 2 segundos
   setTimeout(() => {
     notification.classList.remove('opacity-100');
     notification.classList.add('opacity-0');
@@ -119,10 +112,15 @@ function showNotification(message) {
 function htmlToPlainText(html) {
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
-  return tempDiv.textContent.replace(/\n\s*\n/g, '\n').trim();
+  // Remove espaços em branco e quebras de linha extras, incluindo indentação inicial
+  return tempDiv.textContent
+    .split('\n')
+    .map(line => line.trim()) // Remove espaços no início e fim de cada linha
+    .filter(line => line.length > 0) // Remove linhas vazias
+    .join('\n')
+    .trim();
 }
 
-// Funções de Inicialização
 async function initializeDefaultStates() {
   maintenanceState = {};
   desiredPlates.forEach(plate => {
@@ -136,7 +134,6 @@ async function initializeDefaultStates() {
   await loadStateFromSupabase();
 }
 
-// Funções de Manipulação de Arquivos
 function processFile(file) {
   if (!file) {
     console.log('Seleção de arquivo cancelada. Mantendo o último extrato visível.');
@@ -177,7 +174,6 @@ function processFile(file) {
       renderSummary(table);
       renderMaintenanceModal();
       renderMiscModal();
-      renderRequestMaintenanceModal();
     } catch (err) {
       console.error('Erro ao processar o arquivo:', err);
       showError('Erro ao processar o arquivo: ' + err.message);
@@ -190,7 +186,6 @@ function processFile(file) {
   reader.readAsText(file);
 }
 
-// Configuração de Drag-and-Drop
 function setupDragAndDrop() {
   const dropZone = document.getElementById('dropZone');
   const mainContent = document.getElementById('mainContent');
@@ -238,7 +233,6 @@ function setupDragAndDrop() {
   });
 }
 
-// Funções de Formatação e Validação
 function showError(message) {
   const contentDiv = document.getElementById('content');
   contentDiv.innerHTML = `<p class="text-red-500 text-center">${message}</p>`;
@@ -253,13 +247,11 @@ function formatCurrency(value) {
   return formatted.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-// Funções de Busca de Dados
 async function fetchFuelPrices() {
   console.warn('Preços dinâmicos de combustíveis não disponíveis; usando valores estáticos.');
   return fuelPrices;
 }
 
-// Funções de Renderização de Cartões
 function renderVehicleCards(table) {
   const contentDiv = document.getElementById('content');
   contentDiv.innerHTML = '';
@@ -305,7 +297,6 @@ function renderVehicleCards(table) {
       <p class="text-3xl font-bold ${balanceValue === 0 ? 'zero-balance' : 'text-green-600'} loaded" data-balance-display="R$ ${balanceDisplay}">R$ ${balanceDisplay}</p>
       ${isInMaintenance ? '<div class="maintenance-badge loaded">Em Manutenção</div>' : ''}
     `;
-    // Adicionar evento de clique para copiar a placa
     card.addEventListener('click', async () => {
       const plateText = card.getAttribute('data-plate');
       const success = await copyToClipboard(plateText);
@@ -529,7 +520,6 @@ async function renderSummary(table) {
   }
 }
 
-// Funções de Renderização de Modais
 async function renderMaintenanceModal() {
   const maintenanceList = document.getElementById('maintenanceList');
   maintenanceList.innerHTML = '';
@@ -654,7 +644,6 @@ function renderRequestMaintenanceModal() {
   });
 }
 
-// Função para renderizar o modal de relatório de e-mail
 function renderEmailReportModal(data) {
   const emailReportModal = document.getElementById('emailReportModal');
   const emailReportContent = document.getElementById('emailReportContent');
@@ -664,31 +653,32 @@ function renderEmailReportModal(data) {
   }
 
   const emailBody = `
-    <p><strong>Destinatário:</strong> gadlocados@compesa.com.br</p>
-    <p><strong>Cc:</strong> swamirecife@compesa.com.br, luannesilva@compesa.com.br</p>
-    <p><strong>Assunto:</strong> Manutenção do Veículo ${data.vehicleSelect} Km ${data.currentKm} - CMA SUL/GPM</p>
-    <hr class="my-4">
-    <p>${getGreeting()}</p>
-    <p>Gostaria de informar que o veículo de placa <strong>${data.vehicleSelect}</strong>, com <strong>${data.currentKm}</strong> km rodados, necessita de alguns ajustes importantes. Abaixo, listo os problemas identificados:</p>
-    <br>
-    <p>${data.issues.replace(/\n/g, '<br>')}</p>
-    <br>
-    <p><strong>Gerência:</strong> GERÊNCIA DE PRODUÇÃO METROPOLITANA - GPM</p>
-    <p><strong>Coordenação:</strong> COORDENAÇÃO DE MANUTENÇÃO DE ADUTORA - CMA SUL</p>
-    <p><strong>Cidade onde o veículo se encontra:</strong> Cabo de Santo Agostinho</p>
-    <p><strong>Telefone da unidade:</strong> 3412-9797</p>
-    <p><strong>Contato do condutor do veículo:</strong> ${data.driverContact} - ${data.driverSelect}</p>
-    <p><strong>Unidade de lotação do veículo:</strong> ${data.unitSelect}</p>
-    <p><strong>Endereço da unidade:</strong> ${data.unitAddress}</p>
-    <p><strong>Google Maps:</strong> <a href="${data.unitMaps}" target="_blank">${data.unitMaps}</a></p>
-    <p><strong>Locadora/Responsável:</strong> ${data.locadoraSelect}</p>
-  `;
+<strong>Destinatário:</strong> gadlocados@compesa.com.br<br>
+<strong>Cc:</strong> swamirecife@compesa.com.br, luannesilva@compesa.com.br<br>
+<strong>Assunto:</strong> Manutenção do Veículo ${data.vehicleSelect} Km ${data.currentKm} - CMA SUL/GPM
+<br><br>
+${getGreeting()}
+<br><br>
+Gostaria de informar que o veículo de placa <strong>${data.vehicleSelect}</strong>, com <strong>${data.currentKm}</strong> km rodados, necessita de alguns ajustes importantes. Abaixo, listo os problemas identificados:
+<br><br>
+${data.issues.replace(/\n/g, '<br>')}
+<br><br>
+<strong>Gerência:</strong> GERÊNCIA DE PRODUÇÃO METROPOLITANA - GPM<br>
+<strong>Coordenação:</strong> COORDENAÇÃO DE MANUTENÇÃO DE ADUTORA - CMA SUL<br>
+<strong>Cidade onde o veículo se encontra:</strong> Cabo de Santo Agostinho<br>
+<strong>Telefone da unidade:</strong> 3412-9797<br>
+<strong>Contato do condutor do veículo:</strong> ${data.driverContact} - ${data.driverSelect}<br>
+<strong>Unidade de lotação do veículo:</strong> ${data.unitSelect}<br>
+<strong>Endereço da unidade:</strong> ${data.unitAddress}<br>
+<strong>Google Maps:</strong> <a href="${data.unitMaps}" target="_blank">${data.unitMaps}</a><br>
+<strong>Locadora/Responsável:</strong> ${data.locadoraSelect}
+`;
+
 
   emailReportContent.innerHTML = emailBody;
   toggleEmailReportModal(true);
 }
 
-// Função para controlar o modal de relatório de e-mail
 function toggleEmailReportModal(show) {
   const modal = document.getElementById('emailReportModal');
   if (modal) {
@@ -705,7 +695,6 @@ function getGreeting() {
   return "Boa noite!";
 }
 
-// Funções de Atualização de Interface
 function updateVehicleCard(plate) {
   const card = document.querySelector(`.modern-card[data-plate="${plate}"]`);
   if (card) {
@@ -842,7 +831,6 @@ function calculateOperationData() {
   return { cmaSulCount, cprSulCount, maintenanceCount };
 }
 
-// Funções de Captura e Compartilhamento de Imagem
 function formatDateTime() {
   const now = new Date();
   const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -945,7 +933,6 @@ async function shareImage() {
   }
 }
 
-// Funções de Controle de Modais
 function toggleMaintenanceModal(show) {
   const modal = document.getElementById('maintenanceModal');
   if (modal) {
@@ -971,7 +958,6 @@ function toggleRequestMaintenanceModal(show) {
     modal.classList.toggle('hidden', !show);
     modal.classList.toggle('show', show);
     if (!show) {
-      // Limpar formulário ao fechar
       const form = document.getElementById('requestMaintenanceForm');
       if (form) {
         form.reset();
@@ -984,12 +970,6 @@ function toggleRequestMaintenanceModal(show) {
   }
 }
 
-// Configurações de Responsividade
-function setupResponsiveElements() {
-  window.scrollTo(0, 0);
-}
-
-// Funções de Integração com Supabase
 async function saveMaintenanceToSupabase(plate, isInMaintenance) {
   try {
     const { error } = await supabase
@@ -1063,11 +1043,11 @@ async function loadStateFromSupabase() {
   }
 }
 
-// Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
   await initializeDefaultStates();
   setupDragAndDrop();
   setupResponsiveElements();
+  renderRequestMaintenanceModal();
 
   document.getElementById('maintenanceBtn').addEventListener('click', () => toggleMaintenanceModal(true));
   document.getElementById('miscBtn').addEventListener('click', () => toggleMiscModal(true));
@@ -1089,7 +1069,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const unitMaps = document.getElementById('unitMaps').value;
     const locadoraSelect = document.getElementById('locadoraSelect').value;
 
-    // Validação dos campos obrigatórios
     if (!vehicleSelect || !currentKm || !issues || !driverSelect || !driverContact || !unitSelect || !unitAddress || !unitMaps || !locadoraSelect) {
       showError('Por favor, preencha todos os campos obrigatórios.');
       return;
@@ -1108,12 +1087,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     renderEmailReportModal(emailData);
-    toggleRequestMaintenanceModal(false); // Fechar o modal de solicitação após exibir o relatório
+    toggleRequestMaintenanceModal(false);
   });
 
   document.getElementById('closeEmailReportModalBtn').addEventListener('click', () => toggleEmailReportModal(false));
 
-  // Adicionando funcionalidade ao botão de copiar e-mail
   document.getElementById('copyEmailBtn').addEventListener('click', async () => {
     const emailReportContent = document.getElementById('emailReportContent');
     if (emailReportContent) {
@@ -1137,5 +1115,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('mainContent').classList.add('loaded');
 });
 
-
-
+function setupResponsiveElements() {
+  window.scrollTo(0, 0);
+}
